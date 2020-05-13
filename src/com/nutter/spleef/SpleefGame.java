@@ -79,10 +79,9 @@ public class SpleefGame
 	}
 
 
+	private void onGameStart ()
+	{
 
-  private void onGameStart ()
-  {
-
-  }
+	}
 
 }
