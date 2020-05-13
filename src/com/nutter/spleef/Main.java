@@ -1,4 +1,6 @@
 package com.nutter.spleef;
+import java.util.ArrayList;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -12,8 +14,10 @@ import org.bukkit.command.CommandSender;
 // Space alien
 public class Main extends JavaPlugin
 {
+	
 	public SpleefGame game;
 	static Economy economy;
+	public ArrayList<Spleefer> spleeferList;
 	
 
 	@Override
@@ -76,13 +80,17 @@ public class Main extends JavaPlugin
 					Player p = (Player) sender;
 					if(game != null)
 					{
-						if(game.joinedList.contains(p.getUniqueId()))
+						if(game.joinedList.contains(p))
 						{
 							p.sendMessage(ChatColor.GOLD + "You are already in the game. There are " + ChatColor.DARK_GREEN + game.joinedList.size() + ChatColor.GOLD + " players.");
 						}
 						else
 						{
-						
+							Spleefer splarf;
+							splarf=new Spleefer(this,p);
+							spleeferList.add(splarf);
+							splarf.join(p,args);
+							
 						}
 					}
 				}

@@ -13,7 +13,7 @@ import org.bukkit.entity.Player;
 public class SpleefGame
 {
 	public Main plugin;
-  	public ArrayList<String> joinedList;
+  	public ArrayList<Player> joinedList;
   	public int pot;
   	public boolean gameInProgress;
   	public double price;
