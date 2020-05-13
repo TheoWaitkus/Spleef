@@ -22,18 +22,17 @@ public class Spleefer
 		isInGame=false;
 	}
 	
-//	public boolean create(CommandSender sender, String[] args)
-//	{
-//		if(Main.economy.has(Bukkit.getServer().getPlayer(sender.getName()),Double.parseDouble(args[1])))
-//		{
-//			Main.economy.withdrawPlayer(Bukkit.getServer().getPlayer(sender.getName()),Double.parseDouble(args[1]));
-//			isInGame=true;
-//			return true;
-//		}
-//		return false;
-//	}
-
-	
+	public boolean create(CommandSender sender, String[] args)
+	{
+		if(Main.economy.has(Bukkit.getServer().getPlayer(sender.getName()),Double.parseDouble(args[1])))
+		{
+			Main.economy.withdrawPlayer(Bukkit.getServer().getPlayer(sender.getName()),Double.parseDouble(args[1]));
+			isInGame=true;
+			return true;
+		}
+		return false;
+	}
+		
 	public boolean join(CommandSender sender, String[] args)
 	{
 		if(Main.economy.has(Bukkit.getServer().getPlayer(sender.getName()),Double.parseDouble(args[1])))

@@ -80,6 +80,10 @@ public class Main extends JavaPlugin
 						{
 							p.sendMessage(ChatColor.GOLD + "You are already in the game. There are " + ChatColor.DARK_GREEN + game.joinedList.size() + ChatColor.GOLD + " players.");
 						}
+						else
+						{
+						
+						}
 					}
 				}
 
