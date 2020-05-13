@@ -21,8 +21,4 @@ public class SerializableInventory implements Serializable
 	{
 		return cereal;
 	}
-	public void setInventory(Inventory cereal)
-	{
-		this.cereal=cereal;
-	}
 }
