@@ -27,17 +27,6 @@ public class SpleefGame
 
 		price = priceStart;
 
-
-		if(price >= 0.0)
-		{
-			//game is a-go, all args are valid. -- do whatever needs to be done to this object for a game to be ready.
-
-		}
-		else
-		{
-			//game failed, value -1 is used to report to the class that is creating the game that the game should be treated as non-existent.
-			price = -1;
-		}
 	}
 	
 	public void incrementPot()
