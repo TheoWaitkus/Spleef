@@ -2,6 +2,7 @@ package com.nutter.spleef;
 import java.util.ArrayList;
 
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -17,13 +18,13 @@ public class Main extends JavaPlugin
 	
 	public SpleefGame game;
 	static Economy economy;
-	public ArrayList<Spleefer> spleeferList;
 	
 
 	@Override
 	public void onEnable()
 	{
 		getLogger().info("Spleef Enabled");
+		setupEconomy();
 	}
 
 	@Override
@@ -90,38 +91,53 @@ public class Main extends JavaPlugin
 					sender.sendMessage(ChatColor.DARK_RED + "There is currently no game, start one with \"/spleef create <Price>\".");
 					return true;
 				}
-
-
 				if(sender instanceof Player)
 				{
 					Player p = (Player) sender;
-					if(game != null)
+
+					if(game.playerJoinedList.contains(p))
 					{
-						if(game.joinedList.contains(p))
+						p.sendMessage(ChatColor.DARK_RED + "You are already in the game.");
+						return true;
+					}
+					else
+					{
+						if (economy.has(p, game.price))
 						{
-							p.sendMessage(ChatColor.GOLD + "You are already in the game. There are " + ChatColor.DARK_GREEN + game.joinedList.size() + ChatColor.GOLD + " players.");
+							economy.withdrawPlayer(p, game.price);
+							game.addPlayer(p);
+							Bukkit.broadcastMessage(ChatColor.GOLD + p.getName() + " has joined the spleef game! There are " + ChatColor.DARK_GREEN + game.playerJoinedList.size() + ChatColor.GOLD + " players.");
+							return true;
 						}
-						else
-						{
-							Spleefer splarf;
-							splarf=new Spleefer(this,p);
-							spleeferList.add(splarf);
-							splarf.join(args);
-							
-						}
+
 					}
 				}
-
-				//we are going to run some method in Spleefer on the sender cast to a player object that makes them join here.
-
-
+				sender.sendMessage(ChatColor.DARK_RED + "You are not a player, ya dingus! You can't join a game!");
+				return true;
 			}
 
 			//player wants to leave the queue for the game
 			if(args[0].equalsIgnoreCase("Leave"))
 			{
+				if(game == null)
+				{
+					sender.sendMessage(ChatColor.DARK_RED + "There is currently no game.");
+					return true;
+				}
+				if(sender instanceof Player)
+				{
 
+					Player p = (Player) sender;
+					if(game.playerJoinedList.contains(p))
+					{
+						game.removePlayer(p);
+						return true;
+					}
+					else
+					{
 
+					}
+				}
 				return false;
 			}
 

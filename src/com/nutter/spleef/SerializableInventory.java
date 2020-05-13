@@ -2,7 +2,6 @@ package com.nutter.spleef;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 

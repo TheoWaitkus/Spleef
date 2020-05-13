@@ -12,7 +12,6 @@ public class Spleefer
 {
 	Player p;
 	Main plugin;
-	boolean isInGame;
 	InventoryManagement inventoryManager;
 
   	
@@ -20,37 +19,44 @@ public class Spleefer
 	{
 		this.p = p;
 		this.plugin = plugin;
-		isInGame=false;
-		this.inventoryManager=new InventoryManagement(p.getInventory());
+		this.inventoryManager = new InventoryManagement(p.getInventory());
 	}
-	
-	public boolean create(String[] args)
-	{
-		if(Main.economy.has(Bukkit.getServer().getPlayer(p.getName()),Double.parseDouble(args[1])))
-		{
-			Main.economy.withdrawPlayer(Bukkit.getServer().getPlayer(p.getName()),Double.parseDouble(args[1]));
-			isInGame=true;
-			return true;
-		}
-		return false;
-	}
-		
-	public boolean join(String[] args)
-	{
-		if(Main.economy.has(Bukkit.getServer().getPlayer(p.getName()),Double.parseDouble(args[1])))
-		{
-			Main.economy.withdrawPlayer(Bukkit.getServer().getPlayer(p.getName()),Double.parseDouble(args[1]));
-			isInGame=true;
-			return true;
-		}
-		return false;
-	}
-	
-	public boolean leave(String[] args)
-	{
-		//Give back inventory tp back to location
-		return true;
-	}
+
+
+	// this functionality will be handled in SpleefGame's constructor! Stop uncommenting this!
+
+//	public boolean create(String[] args)
+//	{
+//		if(Main.economy.has(Bukkit.getServer().getPlayer(p.getName()),Double.parseDouble(args[1])))
+//		{
+//			Main.economy.withdrawPlayer(Bukkit.getServer().getPlayer(p.getName()),Double.parseDouble(args[1]));
+//			isInGame=true;
+//			return true;
+//		}
+//		return false;
+//	}
+
+
+	//this functionality will be handled with SpleefGame.addPlayer and main.
+
+//	public boolean join(String[] args)
+//	{
+//		if(Main.economy.has(Bukkit.getServer().getPlayer(p.getName()),Double.parseDouble(args[1])))
+//		{
+//			Main.economy.withdrawPlayer(Bukkit.getServer().getPlayer(p.getName()),Double.parseDouble(args[1]));
+//			isInGame=true;
+//			return true;
+//		}
+//		return false;
+//	}
+
+	//this functionality will be handled with SpleefGame.removePlayer and main.
+
+//	public boolean leave(String[] args)
+//	{
+//		//Give back inventory tp back to location
+//		return true;
+//	}
 
 	private boolean onStart()
 	{

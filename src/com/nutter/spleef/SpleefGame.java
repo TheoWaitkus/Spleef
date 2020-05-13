@@ -13,7 +13,8 @@ import org.bukkit.entity.Player;
 public class SpleefGame
 {
 	public Main plugin;
-  	public ArrayList<Player> joinedList;
+  	public ArrayList<Spleefer> spleeferList;
+	public ArrayList<Player> playerJoinedList;
   	public int pot;
   	public boolean gameInProgress;
   	public double price;
@@ -25,10 +26,38 @@ public class SpleefGame
 		//here we try to parse the second argument, what should be price, into a double, and if it does not parse, we return an error and cancel the game.
 		// Look at where this constructor is called in Main for the response to a value of -1.
 
+		spleeferList = new ArrayList<Spleefer>();
+		playerJoinedList = new ArrayList<Player>();
 		price = priceStart;
 
 	}
-	
+
+	public boolean addPlayer(Player p)
+	{
+		playerJoinedList.add(p);
+		Spleefer toAdd = new Spleefer(plugin, p);
+		spleeferList.add(toAdd);
+		return true;
+	}
+	public boolean removePlayer(Player p)
+	{
+		playerJoinedList.remove(p);
+
+		Spleefer s = null;
+		for(Spleefer i : spleeferList){
+			if (i.p.getUniqueId().equals(p.getUniqueId())){
+				s = i;
+			}
+		}
+
+		if(s == null){
+			return false;
+		}
+
+		spleeferList.remove(s);
+		return true;
+	}
+
 	public void incrementPot()
 	{
 		pot += price;
@@ -53,6 +82,7 @@ public class SpleefGame
 	{
 		return true;
 	}
+
 
 
 	private void onGameStart ()
