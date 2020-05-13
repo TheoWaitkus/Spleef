@@ -71,7 +71,7 @@ public class Main extends JavaPlugin
 
 				if(game.price != -1.0)
 				{
-					sender.sendMessage(ChatColor.GREEN + "Successfully created a game, do \"/spleef join\" to join it.");
+					sender.sendMessage(ChatColor.DARK_GREEN + "Successfully created a game, do \"/spleef join\" to join it.");
 					Bukkit.broadcastMessage(ChatColor.GOLD + sender.getName() + " has created a spleef game! type /spleef join to ready up!");
 					return true;
 				}
@@ -96,7 +96,7 @@ public class Main extends JavaPlugin
 				{
 					Player p = (Player) sender;
 
-					if(game.playerJoinedList.contains(p))
+					if(game.joinedList.contains(p))
 					{
 						p.sendMessage(ChatColor.DARK_RED + "You are already in the game.");
 						return true;
@@ -107,7 +107,7 @@ public class Main extends JavaPlugin
 						{
 							economy.withdrawPlayer(p, game.price);
 							game.addPlayer(p);
-							Bukkit.broadcastMessage(ChatColor.GOLD + p.getName() + " has joined the spleef game! There are " + ChatColor.DARK_GREEN + game.playerJoinedList.size() + ChatColor.GOLD + " players.");
+							Bukkit.broadcastMessage(ChatColor.GOLD + p.getName() + " has joined the spleef game! There are " + ChatColor.DARK_GREEN + game.joinedList.size() + ChatColor.GOLD + " players.");
 							return true;
 						}
 
@@ -129,9 +129,10 @@ public class Main extends JavaPlugin
 				{
 
 					Player p = (Player) sender;
-					if(game.playerJoinedList.contains(p))
+					if(game.joinedList.contains(p))
 					{
 						game.removePlayer(p);
+						p.sendMessage(ChatColor.DARK_GREEN + "You have left the game.");
 						return true;
 					}
 					else

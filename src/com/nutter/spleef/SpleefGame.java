@@ -13,48 +13,27 @@ import org.bukkit.entity.Player;
 public class SpleefGame
 {
 	public Main plugin;
-  	public ArrayList<Spleefer> spleeferList;
-	public ArrayList<Player> playerJoinedList;
-  	public int pot;
-  	public boolean gameInProgress;
+	public ArrayList<Player> joinedList;
+  	public double pot;
   	public double price;
   	
 	public SpleefGame(Main plugin, CommandSender sender, double priceStart)
 	{
 		this.plugin = plugin;
-
-		//here we try to parse the second argument, what should be price, into a double, and if it does not parse, we return an error and cancel the game.
-		// Look at where this constructor is called in Main for the response to a value of -1.
-
-		spleeferList = new ArrayList<Spleefer>();
-		playerJoinedList = new ArrayList<Player>();
+		joinedList = new ArrayList<Player>();
 		price = priceStart;
-
+		pot = 0.0;
 	}
 
 	public boolean addPlayer(Player p)
 	{
-		playerJoinedList.add(p);
-		Spleefer toAdd = new Spleefer(plugin, p);
-		spleeferList.add(toAdd);
+		joinedList.add(p);
+		incrementPot();
 		return true;
 	}
 	public boolean removePlayer(Player p)
 	{
-		playerJoinedList.remove(p);
-
-		Spleefer s = null;
-		for(Spleefer i : spleeferList){
-			if (i.p.getUniqueId().equals(p.getUniqueId())){
-				s = i;
-			}
-		}
-
-		if(s == null){
-			return false;
-		}
-
-		spleeferList.remove(s);
+		joinedList.remove(p);
 		return true;
 	}
 
@@ -84,9 +63,33 @@ public class SpleefGame
 	}
 
 
-
 	private void onGameStart ()
 	{
+		for(Player p : joinedList)
+		{
+
+/*
+			File file = new File(plugin.getDataFolder() + File.separator + "InventoryTemp" + File.separator + p.getUniqueId() + ".yml");
+
+			if(!file.exists())
+			{
+				try
+				{
+					file.createNewFile();
+				}
+				catch (IOException e)
+				{
+					e.printStackTrace();
+				}
+			}
+			YamlConfiguration yc = YamlConfiguration.loadConfiguration(file);
+*/
+
+
+			//put whatever witchcraft you are doing to put serializable inventory into memory in here.
+
+
+		}
 
 	}
 
