@@ -13,13 +13,15 @@ public class Spleefer
 	Player p;
 	Main plugin;
 	boolean isInGame;
+	InventoryManagement inventoryManager;
 
   	
-	public Spleefer(Main plugin, Player pI)
+	public Spleefer(Main plugin, Player p)
 	{
-		this.p = pI;
+		this.p = p;
 		this.plugin = plugin;
 		isInGame=false;
+		this.inventoryManager=new InventoryManagement(p.getInventory());
 	}
 	
 	public boolean create(String[] args)

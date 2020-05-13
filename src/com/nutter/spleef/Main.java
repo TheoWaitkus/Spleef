@@ -89,7 +89,7 @@ public class Main extends JavaPlugin
 							Spleefer splarf;
 							splarf=new Spleefer(this,p);
 							spleeferList.add(splarf);
-							splarf.join(p,args);
+							splarf.join(args);
 							
 						}
 					}
