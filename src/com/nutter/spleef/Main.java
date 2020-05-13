@@ -42,8 +42,25 @@ public class Main extends JavaPlugin
 					return true;
 				}
 
+				double price;
+
+				try{
+					price = Double.parseDouble(args[1]);
+				}catch(NullPointerException np){
+					price = -1.0;
+				}catch(NumberFormatException nf){
+
+					price = -1.0;
+				}
+
+				if(price < 0){
+					sender.sendMessage(ChatColor.DARK_RED + "Invalid price!");
+					sender.sendMessage(ChatColor.DARK_RED + "No game was created.");
+					return true;
+				}
+
 				//attempt to create a game
-				SpleefGame game = new SpleefGame(this, sender, args);
+				SpleefGame game = new SpleefGame(this, sender, price);
 
 				if(game.price != -1.0){
 					sender.sendMessage(ChatColor.GREEN + "Successfully created a game, do \"/spleef join\" to join it.");

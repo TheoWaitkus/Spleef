@@ -18,22 +18,14 @@ public class SpleefGame
   	public boolean gameInProgress;
   	public double price;
   	
-	public SpleefGame(Main plugin, CommandSender sender, String[] args)
+	public SpleefGame(Main plugin, CommandSender sender, double priceStart)
 	{
 		this.plugin = plugin;
 
 		//here we try to parse the second argument, what should be price, into a double, and if it does not parse, we return an error and cancel the game.
 		// Look at where this constructor is called in Main for the response to a value of -1.
 
-		try{
-			price = Double.parseDouble(args[1]);
-		}catch(NullPointerException np){
-			sender.sendMessage(ChatColor.DARK_RED + "Invalid price!");
-			price = -1.0;
-		}catch(NumberFormatException nf){
-			sender.sendMessage(ChatColor.DARK_RED + "Invalid price!");
-			price = -1.0;
-		}
+		price = priceStart;
 
 
 		if(price >= 0.0){
