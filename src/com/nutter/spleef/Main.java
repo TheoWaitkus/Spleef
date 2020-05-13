@@ -37,7 +37,8 @@ public class Main extends JavaPlugin
 			if(args[0].equalsIgnoreCase("Create"))
 			{
 
-				if(game != null){
+				if(game != null)
+				{
 					sender.sendMessage(ChatColor.DARK_RED + "There is already a game in progress/waiting to start!");
 					return true;
 				}
@@ -45,11 +46,14 @@ public class Main extends JavaPlugin
 				//attempt to create a game
 				SpleefGame game = new SpleefGame(this, sender, args);
 
-				if(game.price != -1.0){
+				if(game.price != -1.0)
+				{
 					sender.sendMessage(ChatColor.GREEN + "Successfully created a game, do \"/spleef join\" to join it.");
 					Bukkit.broadcastMessage(ChatColor.GOLD + sender.getName() + " has created a spleef game! type /spleef join to ready up!");
 					return true;
-				}else{
+				}
+				else
+				{
 					sender.sendMessage(ChatColor.DARK_RED + "No game was created.");
 					return true;
 				}
@@ -60,7 +64,8 @@ public class Main extends JavaPlugin
 			if(args[0].equalsIgnoreCase("Join"))
 			{
 
-				if(game == null){
+				if(game == null)
+				{
 					sender.sendMessage(ChatColor.DARK_RED + "There is currently no game, start one with \"/spleef create <Price>\".");
 					return true;
 				}

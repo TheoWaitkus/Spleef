@@ -25,22 +25,29 @@ public class SpleefGame
 		//here we try to parse the second argument, what should be price, into a double, and if it does not parse, we return an error and cancel the game.
 		// Look at where this constructor is called in Main for the response to a value of -1.
 
-		try{
+		try
+		{
 			price = Double.parseDouble(args[1]);
-		}catch(NullPointerException np){
+		}
+		catch(NullPointerException np)
+		{
 			sender.sendMessage(ChatColor.DARK_RED + "Invalid price!");
 			price = -1.0;
-		}catch(NumberFormatException nf){
+		}
+		catch(NumberFormatException nf)
+		{
 			sender.sendMessage(ChatColor.DARK_RED + "Invalid price!");
 			price = -1.0;
 		}
 
 
-		if(price >= 0.0){
+		if(price >= 0.0)
+		{
 			//game is a-go, all args are valid. -- do whatever needs to be done to this object for a game to be ready.
 
 		}
-		else{
+		else
+		{
 			//game failed, value -1 is used to report to the class that is creating the game that the game should be treated as non-existent.
 			price = -1;
 		}

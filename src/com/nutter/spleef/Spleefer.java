@@ -57,9 +57,12 @@ public class Spleefer
 
 		if(!file.exists())
 		{
-			try {
+			try 
+			{
 				file.createNewFile();
-			} catch (IOException e) {
+			} 
+			catch (IOException e) 
+			{
 				e.printStackTrace();
 			}
 		}
