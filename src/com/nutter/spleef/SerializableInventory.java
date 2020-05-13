@@ -12,6 +12,7 @@ public class SerializableInventory implements Serializable
 	ArrayList<ItemStack> cereal;
 	public SerializableInventory(Inventory inv)
 	{
+		cereal = new ArrayList<ItemStack>();
 		for (ItemStack i : inv)
 		{
 			cereal.add(i.clone());
@@ -20,9 +21,5 @@ public class SerializableInventory implements Serializable
 	public ArrayList<ItemStack> getInventory()
 	{
 		return cereal;
-	}
-	public void setInventory(Inventory cereal)
-	{
-		this.cereal=cereal;
 	}
 }
