@@ -23,6 +23,7 @@ public class Main extends JavaPlugin
 	@Override
 	public void onEnable()
 	{
+		setupEconomy();
 		getLogger().info("Spleef Enabled");
 		setupEconomy();
 	}
