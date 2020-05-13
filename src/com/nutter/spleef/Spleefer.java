@@ -13,39 +13,40 @@ public class Spleefer
 	Player p;
 	Main plugin;
 	boolean isInGame;
+	InventoryManagement inventoryManager;
 
   	
-	public Spleefer(Main plugin, Player pI)
+	public Spleefer(Main plugin, Player p)
 	{
-		this.p = pI;
+		this.p = p;
 		this.plugin = plugin;
 		isInGame=false;
+		this.inventoryManager=new InventoryManagement(p.getInventory());
 	}
 	
-//	public boolean create(CommandSender sender, String[] args)
-//	{
-//		if(Main.economy.has(Bukkit.getServer().getPlayer(sender.getName()),Double.parseDouble(args[1])))
-//		{
-//			Main.economy.withdrawPlayer(Bukkit.getServer().getPlayer(sender.getName()),Double.parseDouble(args[1]));
-//			isInGame=true;
-//			return true;
-//		}
-//		return false;
-//	}
-
-	
-	public boolean join(CommandSender sender, String[] args)
+	public boolean create(String[] args)
 	{
-		if(Main.economy.has(Bukkit.getServer().getPlayer(sender.getName()),Double.parseDouble(args[1])))
+		if(Main.economy.has(Bukkit.getServer().getPlayer(p.getName()),Double.parseDouble(args[1])))
 		{
-			Main.economy.withdrawPlayer(Bukkit.getServer().getPlayer(sender.getName()),Double.parseDouble(args[1]));
+			Main.economy.withdrawPlayer(Bukkit.getServer().getPlayer(p.getName()),Double.parseDouble(args[1]));
+			isInGame=true;
+			return true;
+		}
+		return false;
+	}
+		
+	public boolean join(String[] args)
+	{
+		if(Main.economy.has(Bukkit.getServer().getPlayer(p.getName()),Double.parseDouble(args[1])))
+		{
+			Main.economy.withdrawPlayer(Bukkit.getServer().getPlayer(p.getName()),Double.parseDouble(args[1]));
 			isInGame=true;
 			return true;
 		}
 		return false;
 	}
 	
-	public boolean leave(CommandSender sender, String[] args)
+	public boolean leave(String[] args)
 	{
 		//Give back inventory tp back to location
 		return true;
@@ -57,9 +58,12 @@ public class Spleefer
 
 		if(!file.exists())
 		{
-			try {
+			try 
+			{
 				file.createNewFile();
-			} catch (IOException e) {
+			} 
+			catch (IOException e) 
+			{
 				e.printStackTrace();
 			}
 		}

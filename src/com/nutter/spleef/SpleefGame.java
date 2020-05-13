@@ -13,7 +13,7 @@ import org.bukkit.entity.Player;
 public class SpleefGame
 {
 	public Main plugin;
-  	public ArrayList<String> joinedList;
+  	public ArrayList<Player> joinedList;
   	public int pot;
   	public boolean gameInProgress;
   	public double price;
@@ -28,11 +28,13 @@ public class SpleefGame
 		price = priceStart;
 
 
-		if(price >= 0.0){
+		if(price >= 0.0)
+		{
 			//game is a-go, all args are valid. -- do whatever needs to be done to this object for a game to be ready.
 
 		}
-		else{
+		else
+		{
 			//game failed, value -1 is used to report to the class that is creating the game that the game should be treated as non-existent.
 			price = -1;
 		}
@@ -64,10 +66,9 @@ public class SpleefGame
 	}
 
 
+	private void onGameStart ()
+	{
 
-  private void onGameStart ()
-  {
-
-  }
+	}
 
 }

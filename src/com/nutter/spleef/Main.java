@@ -1,4 +1,6 @@
 package com.nutter.spleef;
+import java.util.ArrayList;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -12,8 +14,10 @@ import org.bukkit.command.CommandSender;
 // Space alien
 public class Main extends JavaPlugin
 {
+	
 	public SpleefGame game;
 	static Economy economy;
+	public ArrayList<Spleefer> spleeferList;
 	
 
 	@Override
@@ -37,7 +41,8 @@ public class Main extends JavaPlugin
 			if(args[0].equalsIgnoreCase("Create"))
 			{
 
-				if(game != null){
+				if(game != null)
+				{
 					sender.sendMessage(ChatColor.DARK_RED + "There is already a game in progress/waiting to start!");
 					return true;
 				}
@@ -62,11 +67,14 @@ public class Main extends JavaPlugin
 				//attempt to create a game
 				SpleefGame game = new SpleefGame(this, sender, price);
 
-				if(game.price != -1.0){
+				if(game.price != -1.0)
+				{
 					sender.sendMessage(ChatColor.GREEN + "Successfully created a game, do \"/spleef join\" to join it.");
 					Bukkit.broadcastMessage(ChatColor.GOLD + sender.getName() + " has created a spleef game! type /spleef join to ready up!");
 					return true;
-				}else{
+				}
+				else
+				{
 					sender.sendMessage(ChatColor.DARK_RED + "No game was created.");
 					return true;
 				}
@@ -77,7 +85,8 @@ public class Main extends JavaPlugin
 			if(args[0].equalsIgnoreCase("Join"))
 			{
 
-				if(game == null){
+				if(game == null)
+				{
 					sender.sendMessage(ChatColor.DARK_RED + "There is currently no game, start one with \"/spleef create <Price>\".");
 					return true;
 				}
@@ -88,9 +97,17 @@ public class Main extends JavaPlugin
 					Player p = (Player) sender;
 					if(game != null)
 					{
-						if(game.joinedList.contains(p.getUniqueId()))
+						if(game.joinedList.contains(p))
 						{
 							p.sendMessage(ChatColor.GOLD + "You are already in the game. There are " + ChatColor.DARK_GREEN + game.joinedList.size() + ChatColor.GOLD + " players.");
+						}
+						else
+						{
+							Spleefer splarf;
+							splarf=new Spleefer(this,p);
+							spleeferList.add(splarf);
+							splarf.join(args);
+							
 						}
 					}
 				}
