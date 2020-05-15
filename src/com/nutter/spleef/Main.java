@@ -63,12 +63,15 @@ public class Main extends JavaPlugin
 		{
 			FileConfiguration config = this.getConfig();
 
-			if (!(game.isInProgress)) {
+			if (!(game.isInProgress)) 
+			{
 				if(config.isSet("world") && config.isSet("arena-start.x") && config.isSet("arena-start.z") && config.isSet("arena-end.x") && config.isSet("arena-end.z") && config.isSet("altitude"))
 				{
 					//player/console/other sender wants to create a game.
-					if (args[0].equalsIgnoreCase("Create")) {
-						if (game != null) {
+					if (args[0].equalsIgnoreCase("Create")) 
+					{
+						if (game != null) 
+						{
 							sender.sendMessage(ChatColor.DARK_RED + "There is already a game in progress/waiting to start!");
 							return true;
 						}
@@ -77,20 +80,26 @@ public class Main extends JavaPlugin
 
 
 						//testing if the price can parse properly, and if not, using -1.0 as a tag that something went wrong.
-						try {
+						try 
+						{
 							price = Double.parseDouble(args[1]);
-						} catch (NullPointerException np) {
+						} 
+						catch (NullPointerException np) 
+						{
 
 							price = -1.0;
 
-						} catch (NumberFormatException nf) {
+						} 
+						catch (NumberFormatException nf) 
+						{
 
 							price = -1.0;
 						}
 
 
 						//alerts the sender that the game is invalidated, and does not create a game.
-						if (price < 0) {
+						if (price < 0) 
+						{
 							sender.sendMessage(ChatColor.DARK_RED + "Invalid price!");
 							sender.sendMessage(ChatColor.DARK_RED + "No game was created.");
 							return true;
@@ -110,20 +119,27 @@ public class Main extends JavaPlugin
 				}
 
 				//player wants to join the game.
-				if (args[0].equalsIgnoreCase("Join")) {
+				if (args[0].equalsIgnoreCase("Join")) 
+				{
 
-					if (game == null) {
+					if (game == null) 
+					{
 						sender.sendMessage(ChatColor.DARK_RED + "There is currently no game, start one with \"/spleef create <Price>\".");
 						return true;
 					}
-					if (sender instanceof Player) {
+					if (sender instanceof Player) 
+					{
 						Player p = (Player) sender;
 
-						if (game.joinedList.contains(p)) {
+						if (game.joinedList.contains(p)) 
+						{
 							p.sendMessage(ChatColor.DARK_RED + "You are already in the game.");
 							return true;
-						} else {
-							if (economy.has(p, game.price)) {
+						}
+						else 
+						{
+							if (economy.has(p, game.price)) 
+							{
 								economy.withdrawPlayer(p, game.price);
 								Bukkit.broadcastMessage(ChatColor.GOLD + p.getName() + " has joined the spleef game! There are " + ChatColor.DARK_GREEN + game.joinedList.size() + ChatColor.GOLD + " players.");
 								return game.addPlayer(p);
@@ -136,18 +152,24 @@ public class Main extends JavaPlugin
 				}
 
 				//player wants to leave the queue for the game
-				if (args[0].equalsIgnoreCase("Leave")) {
-					if (game == null) {
+				if (args[0].equalsIgnoreCase("Leave")) 
+				{
+					if (game == null) 
+					{
 						sender.sendMessage(ChatColor.DARK_RED + "There is currently no game.");
 						return true;
 					}
-					if (sender instanceof Player) {
+					if (sender instanceof Player) 
+					{
 
 						Player p = (Player) sender;
-						if (game.joinedList.contains(p)) {
+						if (game.joinedList.contains(p)) 
+						{
 							p.sendMessage(ChatColor.DARK_GREEN + "You have left the game.");
 							return game.removePlayer(p);
-						} else {
+						} 
+						else 
+						{
 
 						}
 					}
@@ -202,16 +224,18 @@ public class Main extends JavaPlugin
 				}
 
 				//player/console/other sender is attempting to set the minimum price for joining a game.
-				if (args[0].equalsIgnoreCase("SetMinPrice")) {
+				if (args[0].equalsIgnoreCase("SetMinPrice")) 
+				{
 				}
 
 				//player/console/other sender is attempting to set the time it takes for the game to start after it is created.
-				if (args[0].equalsIgnoreCase("SetStartTime")) {
+				if (args[0].equalsIgnoreCase("SetStartTime")) 
+				{
 				}
 
 				//player/console/other sender is attempting to set the time it takes for the snow blocks to be able to be broken after players get teleported.
-				if (args[0].equalsIgnoreCase("SetCountdownTime")) {
-
+				if (args[0].equalsIgnoreCase("SetCountdownTime")) 
+				{
 				}
 			}
 			sender.sendMessage(ChatColor.DARK_RED + "Game is currently in progress, please wait until after it is complete.");
@@ -222,7 +246,8 @@ public class Main extends JavaPlugin
 	private boolean setupEconomy()
     {
         RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
-        if (economyProvider != null) {
+        if (economyProvider != null) 
+        {
             economy = economyProvider.getProvider();
         }
 
