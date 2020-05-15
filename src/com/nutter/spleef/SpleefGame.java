@@ -48,27 +48,6 @@ public class SpleefGame
 	{
 		pot += price;
 	}
-	
-	public boolean setArena(CommandSender sender, String[] args)
-	{
-		return true;
-	}
-	
-	public boolean setMinPrice(CommandSender sender, String[] args)
-	{
-		return true;
-	}
-	
-	public boolean setStartTime(CommandSender sender, String[] args)
-	{
-		return true;
-	}
-	
-	public boolean setCountdownTime(CommandSender sender, String[] args)
-	{
-		return true;
-	}
-
 
 	public void onGameStart ()
 	{

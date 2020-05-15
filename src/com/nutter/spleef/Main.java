@@ -62,14 +62,13 @@ public class Main extends JavaPlugin
 		if(label.equalsIgnoreCase("Spleef"))
 		{
 			FileConfiguration config = this.getConfig();
-			if(config.isSet("world") && config.isSet("arena-start.x") && config.isSet("arena-start.z") && config.isSet("arena-end.x") && config.isSet("arena-end.z") && config.isSet("altitude"))
-				if(!(game.isInProgress))
+
+			if (!(game.isInProgress)) {
+				if(config.isSet("world") && config.isSet("arena-start.x") && config.isSet("arena-start.z") && config.isSet("arena-end.x") && config.isSet("arena-end.z") && config.isSet("altitude"))
 				{
 					//player/console/other sender wants to create a game.
-					if(args[0].equalsIgnoreCase("Create"))
-					{
-						if(game != null)
-						{
+					if (args[0].equalsIgnoreCase("Create")) {
+						if (game != null) {
 							sender.sendMessage(ChatColor.DARK_RED + "There is already a game in progress/waiting to start!");
 							return true;
 						}
@@ -77,22 +76,21 @@ public class Main extends JavaPlugin
 						double price;
 
 
-
 						//testing if the price can parse properly, and if not, using -1.0 as a tag that something went wrong.
-						try{
+						try {
 							price = Double.parseDouble(args[1]);
-						}catch(NullPointerException np){
+						} catch (NullPointerException np) {
 
 							price = -1.0;
 
-						}catch(NumberFormatException nf){
+						} catch (NumberFormatException nf) {
 
 							price = -1.0;
 						}
 
 
 						//alerts the sender that the game is invalidated, and does not create a game.
-						if(price < 0){
+						if (price < 0) {
 							sender.sendMessage(ChatColor.DARK_RED + "Invalid price!");
 							sender.sendMessage(ChatColor.DARK_RED + "No game was created.");
 							return true;
@@ -105,92 +103,119 @@ public class Main extends JavaPlugin
 						return true;
 
 					}
+				}
+				else
+				{
+					sender.sendMessage("Arena area has not been defined yet, ask an admin to set it up.");
+				}
 
+				//player wants to join the game.
+				if (args[0].equalsIgnoreCase("Join")) {
 
-					//player wants to join the game.
-					if(args[0].equalsIgnoreCase("Join"))
+					if (game == null) {
+						sender.sendMessage(ChatColor.DARK_RED + "There is currently no game, start one with \"/spleef create <Price>\".");
+						return true;
+					}
+					if (sender instanceof Player) {
+						Player p = (Player) sender;
+
+						if (game.joinedList.contains(p)) {
+							p.sendMessage(ChatColor.DARK_RED + "You are already in the game.");
+							return true;
+						} else {
+							if (economy.has(p, game.price)) {
+								economy.withdrawPlayer(p, game.price);
+								Bukkit.broadcastMessage(ChatColor.GOLD + p.getName() + " has joined the spleef game! There are " + ChatColor.DARK_GREEN + game.joinedList.size() + ChatColor.GOLD + " players.");
+								return game.addPlayer(p);
+							}
+
+						}
+					}
+					sender.sendMessage(ChatColor.DARK_RED + "You are not a player, ya dingus! You can't join a game!");
+					return true;
+				}
+
+				//player wants to leave the queue for the game
+				if (args[0].equalsIgnoreCase("Leave")) {
+					if (game == null) {
+						sender.sendMessage(ChatColor.DARK_RED + "There is currently no game.");
+						return true;
+					}
+					if (sender instanceof Player) {
+
+						Player p = (Player) sender;
+						if (game.joinedList.contains(p)) {
+							p.sendMessage(ChatColor.DARK_GREEN + "You have left the game.");
+							return game.removePlayer(p);
+						} else {
+
+						}
+					}
+					return false;
+				}
+
+				//player/console/other sender is attempting to setup an area to be the spleef arena.
+				if (args[0].equalsIgnoreCase("SetArena"))
+				{
+					if(sender.hasPermission("spleef.admin"))
 					{
-
-						if(game == null)
+						if (args.length == 1)
 						{
-							sender.sendMessage(ChatColor.DARK_RED + "There is currently no game, start one with \"/spleef create <Price>\".");
+							sender.sendMessage("Usage: /spleef setarena <world> <start x> <start z> <end x> <end z> <altitude>");
 							return true;
 						}
-						if(sender instanceof Player)
+						if(args.length == 7)
 						{
-							Player p = (Player) sender;
-
-							if(game.joinedList.contains(p))
+							int[] coords = new int[5];
+							for(int i = 2; i < 7; i++)
 							{
-								p.sendMessage(ChatColor.DARK_RED + "You are already in the game.");
-								return true;
-							}
-							else
-							{
-								if (economy.has(p, game.price))
+								try
 								{
-									economy.withdrawPlayer(p, game.price);
-									Bukkit.broadcastMessage(ChatColor.GOLD + p.getName() + " has joined the spleef game! There are " + ChatColor.DARK_GREEN + game.joinedList.size() + ChatColor.GOLD + " players.");
-									return game.addPlayer(p);
+									coords [i-2] = Integer.parseInt(args[i]);
+								}
+								catch(NumberFormatException e){
+									sender.sendMessage(ChatColor.DARK_RED + "Invalid args.");
+									return onCommand(sender, command, label, new String[1]);
 								}
 
 							}
-						}
-						sender.sendMessage(ChatColor.DARK_RED + "You are not a player, ya dingus! You can't join a game!");
-						return true;
-					}
+							if(Bukkit.getServer().getWorld(args[0]) == null){
+								sender.sendMessage("That world does not exist!");
+								return true;
+							}
+							config.set("world",args[1]);
+							config.set("arena-start.x",coords[0]);
+							config.set("arena-start.z",coords[1]);
+							config.set("arena-end.x",coords[2]);
+							config.set("arena-end.z",coords[3]);
+							config.set("altitude",coords[4]);
+							this.saveConfig();
+							sender.sendMessage(ChatColor.GOLD + Integer.toString(Math.abs(coords[0] - coords[2])) + "*" + Integer.toString(Math.abs(coords[1] - coords[3])) + " Arena defined.");
 
-					//player wants to leave the queue for the game
-					if(args[0].equalsIgnoreCase("Leave"))
-					{
-						if(game == null)
-						{
-							sender.sendMessage(ChatColor.DARK_RED + "There is currently no game.");
 							return true;
+
 						}
-						if(sender instanceof Player)
-						{
 
-							Player p = (Player) sender;
-							if(game.joinedList.contains(p))
-							{
-								p.sendMessage(ChatColor.DARK_GREEN + "You have left the game.");
-								return game.removePlayer(p);
-							}
-							else
-							{
-
-							}
-						}
-						return false;
 					}
 
-					//player/console/other sender is attempting to setup an area to be the spleef arena.
-					if(args[0].equalsIgnoreCase("SetArena"))
-					{
-						return game.setArena(sender,args);
-					}
 
-					//player/console/other sender is attempting to set the minimum price for joining a game.
-					if(args[0].equalsIgnoreCase("SetMinPrice"))
-					{
-						return game.setMinPrice(sender,args);
-					}
-
-					//player/console/other sender is attempting to set the time it takes for the game to start after it is created.
-					if(args[0].equalsIgnoreCase("SetStartTime"))
-					{
-						return game.setStartTime(sender,args);
-					}
-
-					//player/console/other sender is attempting to set the time it takes for the snow blocks to be able to be broken after players get teleported.
-					if(args[0].equalsIgnoreCase("SetCountdownTime"))
-					{
-						return game.setCountdownTime(sender,args);
-					}
 				}
-				sender.sendMessage(ChatColor.DARK_RED + "Game is currently in progress, please wait until after it is complete.");
-				return true;
+
+				//player/console/other sender is attempting to set the minimum price for joining a game.
+				if (args[0].equalsIgnoreCase("SetMinPrice")) {
+				}
+
+				//player/console/other sender is attempting to set the time it takes for the game to start after it is created.
+				if (args[0].equalsIgnoreCase("SetStartTime")) {
+				}
+
+				//player/console/other sender is attempting to set the time it takes for the snow blocks to be able to be broken after players get teleported.
+				if (args[0].equalsIgnoreCase("SetCountdownTime")) {
+
+				}
+			}
+			sender.sendMessage(ChatColor.DARK_RED + "Game is currently in progress, please wait until after it is complete.");
+			return true;
 		}
 		return false;
 	}
