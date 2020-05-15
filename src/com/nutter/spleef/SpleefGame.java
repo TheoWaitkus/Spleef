@@ -9,20 +9,27 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitTask;
 
 public class SpleefGame
 {
 	public Main plugin;
 	public ArrayList<Player> joinedList;
+	public boolean isInProgress;
   	public double pot;
   	public double price;
+  	public CommandSender creator;
+  	public BukkitTask startTask;
   	
 	public SpleefGame(Main plugin, CommandSender sender, double priceStart)
 	{
 		this.plugin = plugin;
+		creator = sender;
 		joinedList = new ArrayList<Player>();
 		price = priceStart;
 		pot = 0.0;
+		isInProgress = false;
+		startTask = new GameStartEvent(this.plugin).runTaskLater(this.plugin, 20 * plugin.getConfig().getInt("start-time"));
 	}
 
 	public boolean addPlayer(Player p)
@@ -63,8 +70,18 @@ public class SpleefGame
 	}
 
 
-	private void onGameStart ()
+	public void onGameStart ()
 	{
+
+		isInProgress = true;
+
+		//set all blocks to snow here.
+
+
+		//wait a bit
+
+
+
 		for(Player p : joinedList)
 		{
 
@@ -86,8 +103,10 @@ public class SpleefGame
 */
 
 
-			//put whatever witchcraft you are doing to put serializable inventory into memory in here.
+			//put whatever witchcraft you are doing to put serializable inventory into storage right here.
 
+
+			//teleport all players here.
 
 		}
 

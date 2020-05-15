@@ -1,5 +1,0 @@
-name: SeekingArrow
-main: com.nutter.seekingarrow.Main
-version: 1.0
-commands:
-depend: [Vault]
