@@ -1,10 +1,2 @@
-arena-start:
-  x:
-  y:
-arena-end:
-  x:
-  y:
-altitude: 250
-
 start-time: 30
 countdown-time: 10
