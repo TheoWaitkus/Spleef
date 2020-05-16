@@ -63,11 +63,13 @@ public class Main extends JavaPlugin
 		{
 			FileConfiguration config = this.getConfig();
 
-			if(args.length != 0) {
-				if (args[0].equalsIgnoreCase("Create") && config.isSet("world") && config.isSet("arena-start.x") && config.isSet("arena-start.z") && config.isSet("arena-end.x") && config.isSet("arena-end.z") && config.isSet("altitude"))
+			if(args.length >= 2 && args[0].equalsIgnoreCase("Create")) 
+			{
+				if (config.isSet("world") && config.isSet("arena-start.x") && config.isSet("arena-start.z") && config.isSet("arena-end.x") && config.isSet("arena-end.z") && config.isSet("altitude"))
 				{
 					//player/console/other sender wants to create a game.
-					if (game != null) {
+					if (game != null) 
+					{
 						sender.sendMessage(ChatColor.DARK_RED + "There is already a game in progress/waiting to start!");
 						return true;
 					}
@@ -76,20 +78,26 @@ public class Main extends JavaPlugin
 
 
 					//testing if the price can parse properly, and if not, using -1.0 as a tag that something went wrong.
-					try {
+					try 
+					{
 						price = Double.parseDouble(args[1]);
-					} catch (NullPointerException np) {
+					} 
+					catch (NullPointerException np) 
+					{
 
 						price = -1.0;
 
-					} catch (NumberFormatException nf) {
+					} 
+					catch (NumberFormatException nf) 
+					{
 
 						price = -1.0;
 					}
 
 
 					//alerts the sender that the game is invalidated, and does not create a game.
-					if (price < 0) {
+					if (price < 0) 
+					{
 						sender.sendMessage(ChatColor.DARK_RED + "Invalid price!");
 						sender.sendMessage(ChatColor.DARK_RED + "No game was created.");
 						return true;
@@ -101,14 +109,22 @@ public class Main extends JavaPlugin
 					Bukkit.broadcastMessage(ChatColor.GOLD + sender.getName() + " has created a spleef game! type /spleef join to ready up!");
 					return true;
 
-				} else if(args[0].equalsIgnoreCase("Create")){
+				}
+				else if(args[0].equalsIgnoreCase("Create") && args.length>=2)
+				{
 					sender.sendMessage("Arena area has not been defined yet, ask an admin to set it up.");
 					return true;
 				}
-
+				else if(args[0].equalsIgnoreCase("Create"))
+				{
+					sender.sendMessage("Invalid args");
+					return true;
+				}
+			}
 
 				//player wants to join the game.
-				if (args[0].equalsIgnoreCase("Join")) {
+				if (args[0].equalsIgnoreCase("Join")) 
+				{
 
 					if (game == null) {
 						sender.sendMessage(ChatColor.DARK_RED + "There is currently no game, start one with \"/spleef create <Price>\".");
@@ -284,7 +300,6 @@ public class Main extends JavaPlugin
 						return true;
 					}
 				}
-			}
 			else
 			{
 				sender.sendMessage("avaliable commands:");
