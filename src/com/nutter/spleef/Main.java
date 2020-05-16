@@ -111,6 +111,7 @@ public class Main extends JavaPlugin
 
 				} else {
 					sender.sendMessage("Arena area has not been defined yet, ask an admin to set it up.");
+					return true;
 				}
 
 
