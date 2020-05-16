@@ -72,53 +72,51 @@ public class Main extends JavaPlugin
 			FileConfiguration config = this.getConfig();
 
 
-			if(config.isSet("world") && config.isSet("arena-start.x") && config.isSet("arena-start.z") && config.isSet("arena-end.x") && config.isSet("arena-end.z") && config.isSet("altitude"))
+			if(args[0].equalsIgnoreCase("Create") && config.isSet("world") && config.isSet("arena-start.x") && config.isSet("arena-start.z") && config.isSet("arena-end.x") && config.isSet("arena-end.z") && config.isSet("altitude"))
 			{
+
 				//player/console/other sender wants to create a game.
-				if (args[0].equalsIgnoreCase("Create"))
+				if (game != null)
 				{
-					if (game != null)
-					{
-						sender.sendMessage(ChatColor.DARK_RED + "There is already a game in progress/waiting to start!");
-						return true;
-					}
-
-					double price;
-
-
-					//testing if the price can parse properly, and if not, using -1.0 as a tag that something went wrong.
-					try
-					{
-						price = Double.parseDouble(args[1]);
-					}
-					catch (NullPointerException np)
-					{
-
-						price = -1.0;
-
-					}
-					catch (NumberFormatException nf)
-					{
-
-						price = -1.0;
-					}
-
-
-					//alerts the sender that the game is invalidated, and does not create a game.
-					if (price < 0)
-					{
-						sender.sendMessage(ChatColor.DARK_RED + "Invalid price!");
-						sender.sendMessage(ChatColor.DARK_RED + "No game was created.");
-						return true;
-					}
-
-
-					SpleefGame game = new SpleefGame(this, sender, price);
-					sender.sendMessage(ChatColor.DARK_GREEN + "Successfully created a game, do \"/spleef join\" to join it.");
-					Bukkit.broadcastMessage(ChatColor.GOLD + sender.getName() + " has created a spleef game! type /spleef join to ready up!");
+					sender.sendMessage(ChatColor.DARK_RED + "There is already a game in progress/waiting to start!");
 					return true;
+				}
+
+				double price;
+
+
+				//testing if the price can parse properly, and if not, using -1.0 as a tag that something went wrong.
+				try
+				{
+					price = Double.parseDouble(args[1]);
+				}
+				catch (NullPointerException np)
+				{
+
+					price = -1.0;
 
 				}
+				catch (NumberFormatException nf)
+				{
+
+					price = -1.0;
+				}
+
+
+				//alerts the sender that the game is invalidated, and does not create a game.
+				if (price < 0)
+				{
+					sender.sendMessage(ChatColor.DARK_RED + "Invalid price!");
+					sender.sendMessage(ChatColor.DARK_RED + "No game was created.");
+					return true;
+				}
+
+
+				SpleefGame game = new SpleefGame(this, sender, price);
+				sender.sendMessage(ChatColor.DARK_GREEN + "Successfully created a game, do \"/spleef join\" to join it.");
+				Bukkit.broadcastMessage(ChatColor.GOLD + sender.getName() + " has created a spleef game! type /spleef join to ready up!");
+				return true;
+
 			}
 			else
 			{
@@ -352,6 +350,13 @@ public class Main extends JavaPlugin
 				}
 			}
 
+			sender.sendMessage("avaliable commands:");
+			sender.sendMessage("create, join");
+			if(sender.hasPermission("spleef.admin")){
+				sender.sendMessage("admin commands:");
+				sender.sendMessage("setarena, setminprice, setstarttime, setcountdowntime");
+			}
+			return true;
 		}
 		return false;
 	}
