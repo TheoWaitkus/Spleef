@@ -238,6 +238,29 @@ public class Main extends JavaPlugin
 				//player/console/other sender is attempting to set the time it takes for the game to start after it is created.
 				if (args[0].equalsIgnoreCase("SetStartTime")) 
 				{
+					if(sender.hasPermission("spleef.admin"))
+					{
+						if(args.length==2)
+						{
+							try
+							{
+								Integer.parseInt(args[1]);
+								config.set("start-time",args[1]);
+								sender.sendMessage(ChatColor.GOLD + "StartTime set");
+								return true;
+							}
+							catch(Exception e)
+							{
+								sender.sendMessage(ChatColor.DARK_RED + "Invalid args.");
+								return true;
+							}
+						}
+					}
+					else
+					{
+						sender.sendMessage(ChatColor.DARK_RED + "You don't have permission to do this!");
+						return true;
+					}
 				}
 
 				//player/console/other sender is attempting to set the time it takes for the snow blocks to be able to be broken after players get teleported.
@@ -250,7 +273,7 @@ public class Main extends JavaPlugin
 							try
 							{
 								Integer.parseInt(args[1]);
-								config.set("CountdownTime",args[1]);
+								config.set("countdown-time",args[1]);
 								sender.sendMessage(ChatColor.GOLD + "CountdownTime set");
 								return true;
 							}
