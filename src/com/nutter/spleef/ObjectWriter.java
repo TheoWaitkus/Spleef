@@ -10,15 +10,14 @@ import org.bukkit.inventory.Inventory;
 public class ObjectWriter
 {
 	
-	public static void writeInventory(Main plugin, Player p, Inventory inventory)
+	public static void writeInventory(Main plugin, Player p)
 	{
         try 
         { 
             FileOutputStream fileOut = new FileOutputStream(plugin.getDataFolder()+File.separator+"PlayerInventoryData"+File.separator+p.getUniqueId());
             ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
-            objectOut.writeObject(inventory);
+            objectOut.writeObject(new SerializableInventory(p.getInventory()));
             objectOut.close();
- 
         } 
         catch (Exception ex) 
         {
@@ -26,8 +25,8 @@ public class ObjectWriter
         }
 	}
 	
-	public static Inventory readInventory(Player p)
+	/*public static Inventory readInventory(Player p)
 	{
 		
-	}
+	}*/
 }

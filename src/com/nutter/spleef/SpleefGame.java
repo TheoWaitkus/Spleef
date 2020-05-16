@@ -48,6 +48,11 @@ public class SpleefGame
 	{
 		pot += price;
 	}
+	
+	public void saveInventory(Player p)
+	{
+		ObjectWriter.writeInventory(this.plugin,p);
+	}
 
 	public void onGameStart ()
 	{

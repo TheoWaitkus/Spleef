@@ -8,16 +8,12 @@ import org.bukkit.inventory.ItemStack;
 public class SerializableInventory implements Serializable
 {
 	private static final long serialVersionUID = 1L;
-	ArrayList<ItemStack> cereal;
+	ItemStack[] cereal;
 	public SerializableInventory(Inventory inv)
 	{
-		cereal = new ArrayList<ItemStack>();
-		for (ItemStack i : inv)
-		{
-			cereal.add(i.clone());
-		}
+		cereal = inv.getContents();
 	}
-	public ArrayList<ItemStack> getInventory()
+	public ItemStack[] getInventory()
 	{
 		return cereal;
 	}
