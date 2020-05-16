@@ -194,7 +194,12 @@ public class Main extends JavaPlugin
 
 							}
 							if (Bukkit.getServer().getWorld(args[0]) == null) {
-								sender.sendMessage("That world does not exist!");
+
+								sender.sendMessage(ChatColor.DARK_RED + "That world does not exist!");
+								if(sender instanceof Player){
+									Player p = (Player) sender;
+									sender.sendMessage( "You are currently in" + p.getWorld() + ".");
+								}
 								return true;
 							}
 							config.set("world", args[1]);
