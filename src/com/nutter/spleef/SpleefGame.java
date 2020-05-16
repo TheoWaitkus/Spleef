@@ -80,6 +80,8 @@ public class SpleefGame
 
 		int y = config.getInt("altitude");
 		World world = Bukkit.getWorld(plugin.getConfig().getString("world"));
+
+		//sets floor to snow
 		for(int x = startx; x <= endx; x++)
 		{
 			for(int z = startz; z <= endz; z++)
