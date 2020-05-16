@@ -71,7 +71,7 @@ public class Main extends JavaPlugin
 		{
 			FileConfiguration config = this.getConfig();
 
-			if(args.length > 0) {
+			if(!(args.length == 0)) {
 				if (args[0].equalsIgnoreCase("Create") && config.isSet("world") && config.isSet("arena-start.x") && config.isSet("arena-start.z") && config.isSet("arena-end.x") && config.isSet("arena-end.z") && config.isSet("altitude"))
 				{
 					sender.sendMessage(ChatColor.DARK_GREEN + "You passed the test!");
@@ -294,13 +294,16 @@ public class Main extends JavaPlugin
 					}
 				}
 			}
-			sender.sendMessage("avaliable commands:");
-			sender.sendMessage("create, join");
-			if(sender.hasPermission("spleef.admin")){
-				sender.sendMessage("admin commands:");
-				sender.sendMessage("setarena, setminprice, setstarttime, setcountdowntime");
+			else
+			{
+				sender.sendMessage("avaliable commands:");
+				sender.sendMessage("create, join");
+				if(sender.hasPermission("spleef.admin")){
+					sender.sendMessage("admin commands:");
+					sender.sendMessage("setarena, setminprice, setstarttime, setcountdowntime");
+				}
+				return true;
 			}
-			return true;
 		}
 		return false;
 	}
