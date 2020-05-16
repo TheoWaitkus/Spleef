@@ -17,6 +17,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.scheduler.BukkitTask;
 
 /* TODO
+-Write an onPlayerJoin listener that checks if players have a file written with their inventory and gives it to them, before deleting it.
+
 -Make the config store arena location, start time, and countdown time properly, and have any changes made to those be changed in the config as well.
 
 -Implement SerializableInventory in SpleefGame.onGameStart, to be created and then serialized and saved on the server disk in the plugin.getDataFolder general area.
@@ -204,7 +206,8 @@ public class Main extends JavaPlugin
 								catch(NumberFormatException e)
 								{
 									sender.sendMessage(ChatColor.DARK_RED + "Invalid args.");
-									return onCommand(sender, command, label, new String[1]);
+									return onCommand(sender, command, label, new String[] {"setarena"});
+
 								}
 
 							}
@@ -225,12 +228,8 @@ public class Main extends JavaPlugin
 							return true;
 
 						}
-						else
-						{
-							sender.sendMessage(ChatColor.DARK_RED+"Invalid Arguments "+"\n"+"Usage: /spleef setarena <world> <start x> <start z> <end x> <end z> <altitude>");
-							return true;
-						}
-
+						sender.sendMessage(ChatColor.DARK_RED + "Invalid args.");
+						return onCommand(sender, command, label, new String[] {"setarena"});
 					}
 
 

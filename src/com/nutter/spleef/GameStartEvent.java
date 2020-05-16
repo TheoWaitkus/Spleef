@@ -18,7 +18,15 @@ public class GameStartEvent extends BukkitRunnable
         // What you want to schedule goes here
         if(plugin.game != null)
         {
-            plugin.game.onGameStart();
+            if(plugin.game.isInProgress)
+            {
+                plugin.game.onCountdownEnd();
+            }
+            else
+            {
+                plugin.game.onGameStart();
+            }
+
         }
     }
 
