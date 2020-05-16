@@ -4,9 +4,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
+import org.bukkit.*;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
@@ -58,41 +59,55 @@ public class SpleefGame
 	{
 
 		isInProgress = true;
+		FileConfiguration config = plugin.getConfig();
+		int startx = config.getInt("arena-start.x");
+		int endx = config.getInt("arena-end.x");
+		int startz = config.getInt("arena-start.z");
+		int endz = config.getInt("arena-end.z");
 
-		//set all blocks to snow here.
+		if(endx < startx)
+		{
+			int swap = startx;
+			startx = endx;
+			endx = swap;
+		}
+		if(endz < startz)
+		{
+			int swap = startz;
+			startz = endz;
+			endz = swap;
+		}
 
+		int y = config.getInt("altitude");
+		World world = Bukkit.getWorld(plugin.getConfig().getString("world"));
+		for(int x = startx; x <= endx; x++)
+		{
+			for(int z = startz; z <= endz; z++)
+			{
+				world.getBlockAt(x,y,z).setType(Material.SNOW_BLOCK);
+			}
+		}
 
-		//wait a bit
-
-
-
+		//runs for each player registered for the game
 		for(Player p : joinedList)
 		{
 
-/*
-			File file = new File(plugin.getDataFolder() + File.separator + "InventoryTemp" + File.separator + p.getUniqueId() + ".yml");
+			//writes each player's inventory to a file.
+			ObjectWriter.writeInventory(plugin, p);
 
-			if(!file.exists())
-			{
-				try
-				{
-					file.createNewFile();
-				}
-				catch (IOException e)
-				{
-					e.printStackTrace();
-				}
-			}
-			YamlConfiguration yc = YamlConfiguration.loadConfiguration(file);
-*/
-
-
-			//put whatever witchcraft you are doing to put serializable inventory into storage right here.
-
-
-			//teleport all players here.
-
+			//teleports each player to the center of the arena, 2 blocks off the ground (hopefully enough to prevent clips or anything)
+			p.teleport(new Location(world, startx + (double)(endx-startx)/2.0, y  + 2, startz + (double)(endz-startz)/2.0));
 		}
+
+		startTask = new GameStartEvent(this.plugin).runTaskLater(this.plugin, 20 * plugin.getConfig().getInt("countdown-time"));
+	}
+
+	public void onCountdownEnd()
+	{
+
+		//all players are now able to break blocks.
+
+
 
 	}
 
