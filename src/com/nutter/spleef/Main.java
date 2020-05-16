@@ -193,15 +193,17 @@ public class Main extends JavaPlugin
 							{
 								try
 								{
-									coords [i-2] = Integer.parseInt(args[i]);
+									coords[i-2] = Integer.parseInt(args[i]);
 								}
-								catch(NumberFormatException e){
+								catch(NumberFormatException e)
+								{
 									sender.sendMessage(ChatColor.DARK_RED + "Invalid args.");
 									return onCommand(sender, command, label, new String[1]);
 								}
 
 							}
-							if(Bukkit.getServer().getWorld(args[0]) == null){
+							if(Bukkit.getServer().getWorld(args[0]) == null)
+							{
 								sender.sendMessage("That world does not exist!");
 								return true;
 							}
@@ -216,6 +218,11 @@ public class Main extends JavaPlugin
 
 							return true;
 
+						}
+						else
+						{
+							sender.sendMessage(ChatColor.DARK_RED+"Invalid Arguments "+"\n"+"Usage: /spleef setarena <world> <start x> <start z> <end x> <end z> <altitude>");
+							return true;
 						}
 
 					}
@@ -236,6 +243,20 @@ public class Main extends JavaPlugin
 				//player/console/other sender is attempting to set the time it takes for the snow blocks to be able to be broken after players get teleported.
 				if (args[0].equalsIgnoreCase("SetCountdownTime")) 
 				{
+					if(sender.hasPermission("spleef.admin"))
+					{
+						if(args.length==2)
+						{
+							try
+							{
+								Integer.parseint();
+							}
+							catch(Exception e)
+							{
+							
+							}
+						}
+					}
 				}
 			}
 			sender.sendMessage(ChatColor.DARK_RED + "Game is currently in progress, please wait until after it is complete.");
