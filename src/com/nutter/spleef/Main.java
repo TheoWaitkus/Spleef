@@ -74,7 +74,6 @@ public class Main extends JavaPlugin
 			if(!(args.length == 0)) {
 				if (args[0].equalsIgnoreCase("Create") && config.isSet("world") && config.isSet("arena-start.x") && config.isSet("arena-start.z") && config.isSet("arena-end.x") && config.isSet("arena-end.z") && config.isSet("altitude"))
 				{
-					sender.sendMessage(ChatColor.DARK_GREEN + "You passed the test!");
 					//player/console/other sender wants to create a game.
 					if (game != null) {
 						sender.sendMessage(ChatColor.DARK_RED + "There is already a game in progress/waiting to start!");
@@ -105,7 +104,7 @@ public class Main extends JavaPlugin
 					}
 
 
-					SpleefGame game = new SpleefGame(this, sender, price);
+					game = new SpleefGame(this, sender, price);
 					sender.sendMessage(ChatColor.DARK_GREEN + "Successfully created a game, do \"/spleef join\" to join it.");
 					Bukkit.broadcastMessage(ChatColor.GOLD + sender.getName() + " has created a spleef game! type /spleef join to ready up!");
 					return true;
