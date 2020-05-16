@@ -72,8 +72,9 @@ public class Main extends JavaPlugin
 			FileConfiguration config = this.getConfig();
 
 			if(args.length > 1) {
-				if (args[0].equalsIgnoreCase("Create") && config.isSet("world") && config.isSet("arena-start.x") && config.isSet("arena-start.z") && config.isSet("arena-end.x") && config.isSet("arena-end.z") && config.isSet("altitude")) {
-
+				if (args[0].equalsIgnoreCase("Create") && config.isSet("world") && config.isSet("arena-start.x") && config.isSet("arena-start.z") && config.isSet("arena-end.x") && config.isSet("arena-end.z") && config.isSet("altitude"))
+				{
+					sender.sendMessage(ChatColor.DARK_GREEN + "You passed the test!");
 					//player/console/other sender wants to create a game.
 					if (game != null) {
 						sender.sendMessage(ChatColor.DARK_RED + "There is already a game in progress/waiting to start!");
