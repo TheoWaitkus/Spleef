@@ -1,0 +1,6 @@
+name: Spleef
+main: com.nutter.spleef.Main
+version: 1.0
+commands:
+  spleef:
+depend: [Vault]
