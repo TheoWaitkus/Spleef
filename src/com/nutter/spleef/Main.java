@@ -71,7 +71,7 @@ public class Main extends JavaPlugin
 		{
 			FileConfiguration config = this.getConfig();
 
-			if(args.length > 0) {
+			if(args.length > 1) {
 				if (args[0].equalsIgnoreCase("Create") && config.isSet("world") && config.isSet("arena-start.x") && config.isSet("arena-start.z") && config.isSet("arena-end.x") && config.isSet("arena-end.z") && config.isSet("altitude")) {
 
 					//player/console/other sender wants to create a game.
