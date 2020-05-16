@@ -11,6 +11,8 @@ import java.util.Map;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.io.BukkitObjectInputStream;
+import org.bukkit.util.io.BukkitObjectOutputStream;
 
 public class ObjectWriter
 {
@@ -19,8 +21,9 @@ public class ObjectWriter
 	{
         try 
         { 
+        	
             FileOutputStream fileOut = new FileOutputStream(plugin.getDataFolder()+"\\PlayerInventoryData\\"+p.getUniqueId()+".txt");
-            ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
+            BukkitObjectOutputStream objectOut = new BukkitObjectOutputStream(new ObjectOutputStream(fileOut));
             objectOut.writeObject(new SerializableInventory(p.getInventory()));
             objectOut.close();
         } 
@@ -35,7 +38,7 @@ public class ObjectWriter
         try 
         { 
             FileInputStream fileIn = new FileInputStream(plugin.getDataFolder()+"\\PlayerInventoryData\\"+p.getUniqueId()+".txt");
-            ObjectInputStream objectIn = new ObjectInputStream(fileIn);
+            BukkitObjectInputStream objectIn = new BukkitObjectInputStream(new ObjectInputStream(fileIn));
             Object obj = objectIn.readObject();
             objectIn.close();
             
@@ -54,6 +57,7 @@ public class ObjectWriter
 
             //making it into an arraylist, because that is what setArmorContents takes.
             ItemStack[] toArmor = new ItemStack[armorContents.size()];
+            
             for(int i=0; i<armorContents.size();i++)
             {
                 toArmor[i] = ItemStack.deserialize(armorContents.get(i));

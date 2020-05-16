@@ -36,12 +36,6 @@ public class Main extends JavaPlugin
 		getLogger().info("Spleef Enabled");
 		setupEconomy();
 		game = null;
-		for (Player p: Bukkit.getOnlinePlayers())
-		{
-			ObjectWriter.writeInventory(this,p);
-			p.getInventory().clear();
-			ObjectWriter.restoreInventory(this,p);
-		}
 	}
 
 	@Override
@@ -52,11 +46,24 @@ public class Main extends JavaPlugin
 
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
 	{
+		if(label.equalsIgnoreCase("save"))
+		{
+			Player p = (Player) sender;
+			ObjectWriter.writeInventory(this,p);
+			p.getInventory().clear();
+		}
+		
+		if(label.equalsIgnoreCase("regen"))
+		{
+			Player p = (Player) sender;
+			ObjectWriter.restoreInventory(this,p);
+		}
+		
 		if(label.equalsIgnoreCase("Spleef"))
 		{
 			FileConfiguration config = this.getConfig();
 
-			if(!(args.length == 0)) {
+			if(args.length != 0) {
 				if (args[0].equalsIgnoreCase("Create") && config.isSet("world") && config.isSet("arena-start.x") && config.isSet("arena-start.z") && config.isSet("arena-end.x") && config.isSet("arena-end.z") && config.isSet("altitude"))
 				{
 					//player/console/other sender wants to create a game.
