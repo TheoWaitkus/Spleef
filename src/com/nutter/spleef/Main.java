@@ -249,13 +249,22 @@ public class Main extends JavaPlugin
 						{
 							try
 							{
-								Integer.parseint();
+								Integer.parseInt(args[1]);
+								config.set("CountdownTime",args[1]);
+								sender.sendMessage(ChatColor.GOLD + "CountdownTime set");
+								return true;
 							}
 							catch(Exception e)
 							{
-							
+								sender.sendMessage(ChatColor.DARK_RED + "Invalid args.");
+								return true;
 							}
 						}
+					}
+					else
+					{
+						sender.sendMessage(ChatColor.DARK_RED + "You don't have permission to do this!");
+						return true;
 					}
 				}
 			}
