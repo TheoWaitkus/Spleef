@@ -38,10 +38,10 @@ public class SpleefGame
 
 		FileConfiguration config = plugin.getConfig();
 
-		int startx1 = config.getInt("arena-start.x");
-		int endx1 = config.getInt("arena-end.x");
-		int startz1 = config.getInt("arena-start.z");
-		int endz1 = config.getInt("arena-end.z");
+		startx = config.getInt("arena-start.x");
+		endx = config.getInt("arena-end.x");
+		startz = config.getInt("arena-start.z");
+		endz = config.getInt("arena-end.z");
 
 		altitude = config.getInt("altitude");
 
@@ -113,6 +113,7 @@ public class SpleefGame
 
 			//clears the player inventory, including armor.
 			PlayerInventory inv = p.getInventory();
+
 			inv.clear();
 			inv.setHelmet(new ItemStack(Material.AIR));
 			inv.setChestplate(new ItemStack(Material.AIR));
@@ -138,6 +139,28 @@ public class SpleefGame
 		duringGameTask = new DuringGameLoopEvent(plugin, this).runTaskTimer(plugin, 1, 1);
 	}
 
+	public void onGameEnd(){
+
+		Bukkit.broadcastMessage(ChatColor.DARK_GREEN + "The game is over!");
+		Location spawn = Bukkit.getWorld(plugin.getConfig().getString("world")).getSpawnLocation();
+
+		for(Player p: joinedList){
+			p.getInventory().clear();
+			p.teleport(spawn);
+		}
+		if(joinedList.size() == 1)
+		{
+			Bukkit.broadcastMessage(ChatColor.GREEN + "The winner is " + ChatColor.GOLD +  joinedList.get(0).getName() + ChatColor.GREEN +  "! They get the pot of " + ChatColor.GOLD + "$" + pot + ChatColor.GREEN + "!" );
+		}
+		else
+		{
+			Bukkit.broadcastMessage(ChatColor.RED + "Nobody wins, the house keeps the pot! Muah hah ha!");
+
+		}
+		duringGameTask.cancel();
+		plugin.game = null;
+	}
+
 	public void perTickDuringGame()
 	{
 		Location spawn = Bukkit.getWorld(plugin.getConfig().getString("world")).getSpawnLocation();
@@ -151,26 +174,11 @@ public class SpleefGame
 				ObjectWriter.restoreInventory(plugin,p);
 				p.teleport(spawn);
 				joinedList.remove(p);
-
-
 			}
 		}
 
 		if(joinedList.size() <= 1){
-			Bukkit.broadcastMessage(ChatColor.DARK_GREEN + "The game is over!");
-			if(joinedList.size() == 1)
-			{
-				//game is over
-				duringGameTask.cancel();
-				Bukkit.broadcastMessage(ChatColor.GREEN + "The winner is " + ChatColor.GOLD +  joinedList.get(0).getName() + ChatColor.GREEN +  "! They get the pot of " + ChatColor.GOLD + "$" + pot + ChatColor.GREEN + "!" );
-
-				//this object kills itself
-				plugin.game = null;
-			}
-			else
-			{
-				Bukkit.broadcastMessage(ChatColor.RED + "Nobody wins, the house keeps the pot! Muah hah ha!");
-			}
+			this.onGameEnd();
 		}
 	}
 
