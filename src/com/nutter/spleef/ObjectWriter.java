@@ -40,12 +40,28 @@ public class ObjectWriter
             objectIn.close();
             
             SerializableInventory inv = (SerializableInventory) obj;
-            
-            for(int i=0; i< inv.getInventory().size();i++)//map: inv.getInventory()
+
+            //both is a list of both main inventory and armor from the player
+            List<List<Map<String,Object>>> both = inv.getInventory();
+
+            for(int i=0; i< both.get(0).size();i++)//map: inv.getInventory()
             {
-            	p.getInventory().setItem(i,ItemStack.deserialize(inv.getInventory().get(i)));
+            	p.getInventory().setItem(i,ItemStack.deserialize(both.get(0).get(i)));
             }
-            
+
+            //assigning armorContents to specifically the armor portion of both
+            List<Map<String,Object>> armorContents = both.get(1);
+
+            //making it into an arraylist, because that is what setArmorContents takes.
+            ItemStack[] toArmor = new ItemStack[armorContents.size()];
+            for(int i=0; i<armorContents.size();i++)
+            {
+                toArmor[i] = ItemStack.deserialize(armorContents.get(i));
+
+            }
+            p.getInventory().setArmorContents(toArmor);
+
+
         } 
         catch (Exception ex) 
         {

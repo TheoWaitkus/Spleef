@@ -1,15 +1,13 @@
 package com.nutter.spleef;
-
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
+import net.milkbowl.vault.chat.Chat;
 import org.bukkit.*;
-import org.bukkit.block.data.BlockData;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.scheduler.BukkitTask;
 
 public class SpleefGame
@@ -21,6 +19,12 @@ public class SpleefGame
   	public double price;
   	public CommandSender creator;
   	public BukkitTask startTask;
+  	public BukkitTask duringGameTask;
+	private int startx;
+	private int endx;
+	private int startz;
+	private int endz;
+	private int altitude;
   	
 	public SpleefGame(Main plugin, CommandSender sender, double priceStart)
 	{
@@ -31,6 +35,29 @@ public class SpleefGame
 		pot = 0.0;
 		isInProgress = false;
 		startTask = new GameStartEvent(this.plugin).runTaskLater(this.plugin, 20 * plugin.getConfig().getInt("start-time"));
+
+		FileConfiguration config = plugin.getConfig();
+
+		int startx1 = config.getInt("arena-start.x");
+		int endx1 = config.getInt("arena-end.x");
+		int startz1 = config.getInt("arena-start.z");
+		int endz1 = config.getInt("arena-end.z");
+
+		altitude = config.getInt("altitude");
+
+		if(endx < startx)
+		{
+			int swap = startx;
+			startx = endx;
+			endx = swap;
+		}
+		if(endz < startz)
+		{
+			int swap = startz;
+			startz = endz;
+			endz = swap;
+		}
+
 	}
 
 	public boolean addPlayer(Player p)
@@ -60,23 +87,9 @@ public class SpleefGame
 
 		isInProgress = true;
 		FileConfiguration config = plugin.getConfig();
-		int startx = config.getInt("arena-start.x");
-		int endx = config.getInt("arena-end.x");
-		int startz = config.getInt("arena-start.z");
-		int endz = config.getInt("arena-end.z");
 
-		if(endx < startx)
-		{
-			int swap = startx;
-			startx = endx;
-			endx = swap;
-		}
-		if(endz < startz)
-		{
-			int swap = startz;
-			startz = endz;
-			endz = swap;
-		}
+
+		//place barrier blocks here.
 
 		int y = config.getInt("altitude");
 		World world = Bukkit.getWorld(plugin.getConfig().getString("world"));
@@ -97,6 +110,16 @@ public class SpleefGame
 			//writes each player's inventory to a file.
 			ObjectWriter.writeInventory(plugin, p);
 
+
+			//clears the player inventory, including armor.
+			PlayerInventory inv = p.getInventory();
+			inv.clear();
+			inv.setHelmet(new ItemStack(Material.AIR));
+			inv.setChestplate(new ItemStack(Material.AIR));
+			inv.setLeggings(new ItemStack(Material.AIR));
+			inv.setBoots(new ItemStack(Material.AIR));
+
+
 			//teleports each player to the center of the arena, 2 blocks off the ground (hopefully enough to prevent clips or anything)
 			p.teleport(new Location(world, startx + (double)(endx-startx)/2.0, y  + 2, startz + (double)(endz-startz)/2.0));
 		}
@@ -106,11 +129,49 @@ public class SpleefGame
 
 	public void onCountdownEnd()
 	{
+		Bukkit.broadcastMessage(ChatColor.GOLD + "Game has started! Start spleefing!");
 
-		//all players are now able to break blocks.
+		for(Player p : joinedList){
+			p.getInventory().addItem(new ItemStack(Material.DIAMOND_SHOVEL));
+		}
+
+		duringGameTask = new DuringGameLoopEvent(plugin, this).runTaskTimer(plugin, 1, 1);
+	}
+
+	public void perTickDuringGame()
+	{
+		Location spawn = Bukkit.getWorld(plugin.getConfig().getString("world")).getSpawnLocation();
+
+		for(Player p : joinedList)
+		{
+			if((p.getLocation().getBlockX() > endx || p.getLocation().getBlockX() < startx) || (p.getLocation().getBlockZ() > endz || p.getLocation().getBlockZ() < startz) || (p.getLocation().getBlockY() < altitude || p.getLocation().getBlockY() > altitude + 5))
+			{
+				Bukkit.broadcastMessage(ChatColor.DARK_GREEN + p.getName() + " has been eliminated! Better luck next time!");
+				p.getInventory().clear();
+				ObjectWriter.restoreInventory(plugin,p);
+				p.teleport(spawn);
+				joinedList.remove(p);
 
 
+			}
+		}
 
+		if(joinedList.size() <= 1){
+			Bukkit.broadcastMessage(ChatColor.DARK_GREEN + "The game is over!");
+			if(joinedList.size() == 1)
+			{
+				//game is over
+				duringGameTask.cancel();
+				Bukkit.broadcastMessage(ChatColor.GREEN + "The winner is " + ChatColor.GOLD +  joinedList.get(0).getName() + ChatColor.GREEN +  "! They get the pot of " + ChatColor.GOLD + "$" + pot + ChatColor.GREEN + "!" );
+
+				//this object kills itself
+				plugin.game = null;
+			}
+			else
+			{
+				Bukkit.broadcastMessage(ChatColor.RED + "Nobody wins, the house keeps the pot! Muah hah ha!");
+			}
+		}
 	}
 
 }

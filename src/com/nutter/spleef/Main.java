@@ -19,21 +19,6 @@ import org.bukkit.scheduler.BukkitTask;
 /* TODO
 -Write an onPlayerJoin listener that checks if players have a file written with their inventory and gives it to them, before deleting it.
 
--Make the config store arena location, start time, and countdown time properly, and have any changes made to those be changed in the config as well.
-
--Implement SerializableInventory in SpleefGame.onGameStart, to be created and then serialized and saved on the server disk in the plugin.getDataFolder general area.
-
--Write the rest of onGameStart, including, but not limited to:
-	-Replace all snow in the arena
-	-Teleport all participating players, stored in game.joinedList, to the center of the arena
-	-Save player inventory
-	-Clear player inventory
-
--Create a function that checks each players position every tick, to tell if they have fell or not.
-
--Make sure players cannot use any command that teleports them while they are in a game, without being disqualified (this could be solved by checking if they are within the arena every tick, and if not, disqualifying them).
-
--Figure out how to tell if the game is over, perhaps removing players from joinedList after they call?
 
  */
 
@@ -135,7 +120,7 @@ public class Main extends JavaPlugin
 						} else {
 							if (economy.has(p, game.price)) {
 								economy.withdrawPlayer(p, game.price);
-								Bukkit.broadcastMessage(ChatColor.GOLD + p.getName() + " has joined the spleef game! There are " + ChatColor.DARK_GREEN + game.joinedList.size() + ChatColor.GOLD + " players.");
+								Bukkit.broadcastMessage(ChatColor.GOLD + p.getName() + " has joined the spleef game! There are " + ChatColor.DARK_GREEN + (game.joinedList.size() + 1)  + ChatColor.GOLD + " players.");
 								return game.addPlayer(p);
 							}
 
