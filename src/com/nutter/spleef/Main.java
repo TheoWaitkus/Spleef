@@ -109,7 +109,7 @@ public class Main extends JavaPlugin
 					Bukkit.broadcastMessage(ChatColor.GOLD + sender.getName() + " has created a spleef game! type /spleef join to ready up!");
 					return true;
 
-				} else {
+				} else if(args[0].equalsIgnoreCase("Create")){
 					sender.sendMessage("Arena area has not been defined yet, ask an admin to set it up.");
 					return true;
 				}
