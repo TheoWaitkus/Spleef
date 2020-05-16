@@ -49,6 +49,12 @@ public class Main extends JavaPlugin
 		getLogger().info("Spleef Enabled");
 		setupEconomy();
 		game = null;
+		for (Player p: Bukkit.getOnlinePlayers())
+		{
+			ObjectWriter.writeInventory(this,p);
+			p.getInventory().clear();
+			ObjectWriter.restoreInventory(this,p);
+		}
 	}
 
 	@Override
