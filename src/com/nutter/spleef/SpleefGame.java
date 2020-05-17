@@ -175,8 +175,6 @@ public class SpleefGame
 			p.setHealth(20);
 			p.setFoodLevel(20);
 
-			Bukkit.broadcastMessage(Boolean.toString(p.isOnline()));
-
 			if(!(p.isOnline())){
 				Bukkit.broadcastMessage(ChatColor.DARK_GREEN + p.getName() + " has been eliminated! Better luck next time!");
 				joinedList.remove(i);
