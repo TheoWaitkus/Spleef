@@ -313,7 +313,7 @@ public class Main extends JavaPlugin
 				{
 
 					if (args.length == 1) {
-						sender.sendMessage("Usage: /spleef setarena <world> <start x> <start z> <end x> <end z> <altitude>");
+						sender.sendMessage("Usage: /spleef countdowntime <countdowntime>");
 						return true;
 					}
 
