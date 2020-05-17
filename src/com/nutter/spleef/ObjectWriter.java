@@ -39,7 +39,7 @@ public class ObjectWriter
 	{
         try 
         { 
-
+			p.getInventory().clear();
             FileInputStream fileIn = new FileInputStream(plugin.getDataFolder() + File.separator + "PlayerInventoryData" + File.separator + p.getUniqueId()+".txt");
             BukkitObjectInputStream objectIn = new BukkitObjectInputStream(new ObjectInputStream(fileIn));
             Object obj = objectIn.readObject();
