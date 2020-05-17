@@ -27,7 +27,7 @@ public class Main extends JavaPlugin
 {
 	
 	public SpleefGame game;
-	static Economy economy;
+	public static Economy economy;
 
 	@Override
 	public void onEnable()

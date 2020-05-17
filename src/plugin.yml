@@ -3,6 +3,4 @@ main: com.nutter.spleef.Main
 version: 1.0
 commands:
   spleef:
-  save:
-  regen:
 depend: [Vault]

@@ -153,6 +153,7 @@ public class SpleefGame
 		if(joinedList.size() == 1)
 		{
 			Bukkit.broadcastMessage(ChatColor.GREEN + "The winner is " + ChatColor.GOLD +  joinedList.get(0).getName() + ChatColor.GREEN +  "! They get the pot of " + ChatColor.GOLD + "$" + pot + ChatColor.GREEN + "!" );
+			plugin.economy.depositPlayer(joinedList.get(0),pot);
 		}
 		else
 		{
@@ -165,9 +166,12 @@ public class SpleefGame
 
 	public void perTickDuringGame()
 	{
-
-		for(Player p : joinedList)
+		for(int i = 0; i< joinedList.size(); i++)
 		{
+			Player p = joinedList.get(i);
+			p.setHealth(20);
+			p.setFoodLevel(20);
+
 			if((p.getLocation().getBlockX() > endx || p.getLocation().getBlockX() < startx) || (p.getLocation().getBlockZ() > endz || p.getLocation().getBlockZ() < startz) || (p.getLocation().getBlockY() < (altitude-2) || p.getLocation().getBlockY() > (altitude + 5)))
 			{
 				Bukkit.broadcastMessage(ChatColor.DARK_GREEN + p.getName() + " has been eliminated! Better luck next time!");
@@ -175,9 +179,8 @@ public class SpleefGame
 				ObjectWriter.restoreInventory(plugin,p);
 				ObjectWriter.restoreCoords(plugin,p);
 				joinedList.remove(p);
+				i--;
 			}
-			p.setHealth(20);
-			p.setFoodLevel(20);
 		}
 
 		if(joinedList.size() <= 1){
