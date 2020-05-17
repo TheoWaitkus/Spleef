@@ -35,7 +35,7 @@ public class SpleefGame
 		pot = 0.0;
 		isInProgress = false;
 		startTask = new GameStartEvent(this.plugin).runTaskLater(this.plugin, 20 * plugin.getConfig().getInt("start-time"));
-		new CountdownEvent(this.plugin, this, plugin.getConfig().getInt("start-time"),false, ChatColor.GOLD + "Teleporting joined players in: ").runTaskTimer(plugin,0, 20);
+		new CountdownEvent(this.plugin, this, plugin.getConfig().getInt("start-time"),false, ChatColor.GREEN + "Teleporting joined players in: ").runTaskTimer(plugin,0, 20);
 
 
 		FileConfiguration config = plugin.getConfig();
@@ -103,7 +103,7 @@ public class SpleefGame
 				world.getBlockAt(x,y,z).setType(Material.SNOW_BLOCK);
 			}
 		}
-		Bukkit.broadcastMessage(ChatColor.GOLD + "Join time has ended. Spleefing starting in: ");
+		Bukkit.broadcastMessage(ChatColor.GREEN + "Join time has ended. Spleefing starting in: ");
 		//runs for each player registered for the game
 		for(Player p : joinedList)
 		{
@@ -128,12 +128,12 @@ public class SpleefGame
 			p.teleport(new Location(world, startx + (double)(endx-startx)/2.0, y  + 2, startz + (double)(endz-startz)/2.0));
 		}
 		startTask = new GameStartEvent(this.plugin).runTaskLater(this.plugin, 20 * plugin.getConfig().getInt("countdown-time"));
-		new CountdownEvent(this.plugin, this, plugin.getConfig().getInt("countdown-time"),true, ChatColor.GOLD + "Game starts in: ").runTaskTimer(plugin,0, 20);
+		new CountdownEvent(this.plugin, this, plugin.getConfig().getInt("countdown-time"),true, ChatColor.GREEN + "Game starts in: ").runTaskTimer(plugin,0, 20);
 	}
 
 	public void onCountdownEnd()
 	{
-		Bukkit.broadcastMessage(ChatColor.GOLD + "Game has started! Start spleefing!");
+		Bukkit.broadcastMessage(ChatColor.DARK_GREEN + "Game has started! Start spleefing!");
 
 		for(Player p : joinedList){
 			p.getInventory().addItem(new ItemStack(Material.DIAMOND_SHOVEL));

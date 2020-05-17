@@ -12,8 +12,6 @@ import org.bukkit.command.CommandSender;
 
 /* TODO
 
--Write an onPlayerJoin listener that checks if players have a file written with their inventory and gives it to them, before deleting it.
-
  */
 
 public class Main extends JavaPlugin
@@ -222,7 +220,7 @@ public class Main extends JavaPlugin
 						config.set("arena-end.z", coords[3]);
 						config.set("altitude", coords[4]);
 						this.saveConfig();
-						sender.sendMessage(ChatColor.GOLD + Integer.toString(Math.abs(coords[0] - coords[2])) + "*" + Integer.toString(Math.abs(coords[1] - coords[3])) + " Arena defined.");
+						sender.sendMessage(ChatColor.GREEN + Integer.toString(Math.abs(coords[0] - coords[2])) + "*" + Integer.toString(Math.abs(coords[1] - coords[3])) + " Arena defined.");
 
 						return true;
 
@@ -252,7 +250,7 @@ public class Main extends JavaPlugin
 						try {
 							Integer.parseInt(args[1]);
 							config.set("min-price", args[1]);
-							sender.sendMessage(ChatColor.GOLD + "MinPrice set");
+							sender.sendMessage(ChatColor.GREEN + "Minimum price set");
 							return true;
 						} catch (Exception e) {
 							sender.sendMessage(ChatColor.DARK_RED + "Invalid args.");
@@ -285,7 +283,7 @@ public class Main extends JavaPlugin
 							Integer.parseInt(args[1]);
 							config.set("start-time", Integer.parseInt(args[1]));
 							this.saveConfig();
-							sender.sendMessage(ChatColor.GOLD + "StartTime set");
+							sender.sendMessage(ChatColor.GREEN + "Starting time set");
 							return true;
 						} catch (Exception e) {
 							sender.sendMessage(ChatColor.DARK_RED + "Invalid args.");
@@ -323,7 +321,7 @@ public class Main extends JavaPlugin
 							Integer.parseInt(args[1]);
 							config.set("countdown-time", Integer.parseInt(args[1]));
 							this.saveConfig();
-							sender.sendMessage(ChatColor.GOLD + "CountdownTime set");
+							sender.sendMessage(ChatColor.GOLD + "Countdown time set.");
 							return true;
 						}
 						catch (Exception e)
