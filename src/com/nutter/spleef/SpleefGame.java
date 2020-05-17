@@ -102,11 +102,11 @@ public class SpleefGame
 				world.getBlockAt(x,y,z).setType(Material.SNOW_BLOCK);
 			}
 		}
-
+		Bukkit.broadcastMessage(ChatColor.GOLD + "Join time has ended. Spleefing starting in: " + plugin.getConfig().getString("countdown-time"));
 		//runs for each player registered for the game
 		for(Player p : joinedList)
 		{
-			Bukkit.broadcastMessage(ChatColor.GOLD + "Join time has ended. Spleefing starting in: " + plugin.getConfig().getString("countdown-time"));
+			
 			//writes each player's inventory to a file.
 			ObjectWriter.writeInventory(plugin, p);
 			ObjectWriter.writeCoords(plugin,p);
