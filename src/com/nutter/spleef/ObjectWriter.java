@@ -22,6 +22,8 @@ public class ObjectWriter
 	{
         try 
         { 
+        	File yourFile = new File(plugin.getDataFolder()+"\\PlayerInventoryData\\"+p.getUniqueId()+".txt");
+        	yourFile.createNewFile();
             FileOutputStream fileOut = new FileOutputStream(plugin.getDataFolder()+"\\PlayerInventoryData\\"+p.getUniqueId()+".txt");
             BukkitObjectOutputStream objectOut = new BukkitObjectOutputStream(new ObjectOutputStream(fileOut));
             objectOut.writeObject(new SerializableInventory(p.getInventory()));
@@ -37,6 +39,7 @@ public class ObjectWriter
 	{
         try 
         { 
+
             FileInputStream fileIn = new FileInputStream(plugin.getDataFolder()+"\\PlayerInventoryData\\"+p.getUniqueId()+".txt");
             BukkitObjectInputStream objectIn = new BukkitObjectInputStream(new ObjectInputStream(fileIn));
             Object obj = objectIn.readObject();
@@ -77,6 +80,8 @@ public class ObjectWriter
 	{
         try 
         { 
+        	File yourFile = new File(plugin.getDataFolder()+"\\PlayerCoordData\\"+p.getUniqueId()+".txt");
+        	yourFile.createNewFile();
             FileOutputStream fileOut = new FileOutputStream(plugin.getDataFolder()+"\\PlayerCoordData\\"+p.getUniqueId()+".txt");
             ObjectOutputStream objectOut = new ObjectOutputStream(new ObjectOutputStream(fileOut));
             objectOut.writeObject(p.getLocation().serialize());
