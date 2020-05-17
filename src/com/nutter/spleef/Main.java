@@ -102,6 +102,13 @@ public class Main extends JavaPlugin
 						return true;
 					}
 
+					if(price<config.getInt("min-price"))
+					{
+						sender.sendMessage(ChatColor.DARK_RED + "Price was less than minimum price!");
+						sender.sendMessage(ChatColor.DARK_RED + "No game was created.");
+						return true;
+					}
+
 
 					game = new SpleefGame(this, sender, price);
 					Bukkit.broadcastMessage(ChatColor.GOLD + sender.getName() + " has created a spleef game! type /spleef join to join for $" + price);
@@ -249,7 +256,8 @@ public class Main extends JavaPlugin
 					if (args.length == 2) {
 						try {
 							Integer.parseInt(args[1]);
-							config.set("min-price", args[1]);
+							config.set("min-price", Integer.parseInt(args[1]));
+							this.saveConfig();
 							sender.sendMessage(ChatColor.GREEN + "Minimum price set");
 							return true;
 						} catch (Exception e) {
@@ -321,7 +329,7 @@ public class Main extends JavaPlugin
 							Integer.parseInt(args[1]);
 							config.set("countdown-time", Integer.parseInt(args[1]));
 							this.saveConfig();
-							sender.sendMessage(ChatColor.GOLD + "Countdown time set.");
+							sender.sendMessage(ChatColor.GREEN + "Countdown time set");
 							return true;
 						}
 						catch (Exception e)
