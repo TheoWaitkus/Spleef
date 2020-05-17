@@ -8,6 +8,7 @@ import java.io.ObjectOutputStream;
 import java.util.List;
 import java.util.Map;
 
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -21,7 +22,6 @@ public class ObjectWriter
 	{
         try 
         { 
-        	
             FileOutputStream fileOut = new FileOutputStream(plugin.getDataFolder()+"\\PlayerInventoryData\\"+p.getUniqueId()+".txt");
             BukkitObjectOutputStream objectOut = new BukkitObjectOutputStream(new ObjectOutputStream(fileOut));
             objectOut.writeObject(new SerializableInventory(p.getInventory()));
@@ -72,6 +72,42 @@ public class ObjectWriter
             ex.printStackTrace();
         }
 	}
+	
+	public static void writeCoords(Main plugin, Player p)
+	{
+        try 
+        { 
+            FileOutputStream fileOut = new FileOutputStream(plugin.getDataFolder()+"\\PlayerCoordData\\"+p.getUniqueId()+".txt");
+            ObjectOutputStream objectOut = new ObjectOutputStream(new ObjectOutputStream(fileOut));
+            objectOut.writeObject(p.getLocation().serialize());
+            objectOut.close();
+        } 
+        catch (Exception ex) 
+        {
+            ex.printStackTrace();
+        }
+	}
+	
+	public static void restoreCoords(Main plugin,Player p)
+	{
+        try 
+        { 
+            FileInputStream fileIn = new FileInputStream(plugin.getDataFolder()+"\\PlayerCoordData\\"+p.getUniqueId()+".txt");
+            ObjectInputStream objectIn = new ObjectInputStream(new ObjectInputStream(fileIn));
+            Object obj = objectIn.readObject();
+            objectIn.close();
+            
+            Location location = Location.deserialize(((List<Map<String,Object>>) obj).get(0));
+			p.teleport(location);
+			
+        } 
+        catch (Exception ex) 
+        {
+            ex.printStackTrace();
+        }
+	}
+	
+	
 	
 	/*public static Inventory readInventory(Player p)
 	{

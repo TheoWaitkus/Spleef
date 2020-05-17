@@ -109,6 +109,7 @@ public class SpleefGame
 
 			//writes each player's inventory to a file.
 			ObjectWriter.writeInventory(plugin, p);
+			ObjectWriter.writeCoords(plugin,p);
 
 
 			//clears the player inventory, including armor.
@@ -139,14 +140,15 @@ public class SpleefGame
 		duringGameTask = new DuringGameLoopEvent(plugin, this).runTaskTimer(plugin, 1, 1);
 	}
 
-	public void onGameEnd(){
+	public void onGameEnd()
+	{
 
 		Bukkit.broadcastMessage(ChatColor.DARK_GREEN + "The game is over!");
-		Location spawn = Bukkit.getWorld(plugin.getConfig().getString("world")).getSpawnLocation();
 
 		for(Player p: joinedList){
 			p.getInventory().clear();
-			p.teleport(spawn);
+			ObjectWriter.restoreCoords(plugin,p);
+			ObjectWriter.restoreInventory(plugin,p);
 		}
 		if(joinedList.size() == 1)
 		{
@@ -163,7 +165,6 @@ public class SpleefGame
 
 	public void perTickDuringGame()
 	{
-		Location spawn = Bukkit.getWorld(plugin.getConfig().getString("world")).getSpawnLocation();
 
 		for(Player p : joinedList)
 		{
@@ -172,7 +173,7 @@ public class SpleefGame
 				Bukkit.broadcastMessage(ChatColor.DARK_GREEN + p.getName() + " has been eliminated! Better luck next time!");
 				p.getInventory().clear();
 				ObjectWriter.restoreInventory(plugin,p);
-				p.teleport(spawn);
+				ObjectWriter.restoreCoords(plugin,p);
 				joinedList.remove(p);
 			}
 		}
