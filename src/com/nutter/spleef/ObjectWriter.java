@@ -102,7 +102,7 @@ public class ObjectWriter
             Object obj = objectIn.readObject();
             objectIn.close();
             
-            Location location = Location.deserialize(((List<Map<String,Object>>) obj).get(0));
+            Location location = Location.deserialize(((Map<String,Object>) obj));
 			p.teleport(location);
 			
         } 
@@ -111,11 +111,4 @@ public class ObjectWriter
             ex.printStackTrace();
         }
 	}
-	
-	
-	
-	/*public static Inventory readInventory(Player p)
-	{
-		
-	}*/
 }
