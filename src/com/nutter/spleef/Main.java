@@ -111,7 +111,7 @@ public class Main extends JavaPlugin
 
 
 					game = new SpleefGame(this, sender, price);
-					Bukkit.broadcastMessage(ChatColor.GOLD + sender.getName() + " has created a spleef game! type /spleef join to join for $" + price);
+					Bukkit.broadcastMessage(ChatColor.GOLD + sender.getName() + " has created a spleef game! type /spleef join to join for " + ChatColor.DARK_RED + ChatColor.MAGIC + "A" + ChatColor.DARK_RED + ChatColor.UNDERLINE + "$" + price + ChatColor.MAGIC + "A");
 
 					if(sender instanceof Player)
 					{
