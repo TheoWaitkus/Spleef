@@ -107,8 +107,7 @@ public class Main extends JavaPlugin
 
 
 					game = new SpleefGame(this, sender, price);
-					sender.sendMessage(ChatColor.DARK_GREEN + "Successfully created a game, do \"/spleef join\" to join it.");
-					Bukkit.broadcastMessage(ChatColor.GOLD + sender.getName() + " has created a spleef game! type /spleef join to ready up!");
+					Bukkit.broadcastMessage(ChatColor.GOLD + sender.getName() + " has created a spleef game! type /spleef join to join for $"+price);
 					if(sender instanceof Player)
 					{
 						this.onCommand(sender,command,label,new String[]{"Join"});
@@ -274,7 +273,7 @@ public class Main extends JavaPlugin
 						if (args.length == 2) {
 							try {
 								Integer.parseInt(args[1]);
-								config.set("start-time", args[1]);
+								config.set("start-time", Integer.parseInt(args[1]));
 								this.saveConfig();
 								sender.sendMessage(ChatColor.GOLD + "StartTime set");
 								return true;
@@ -299,7 +298,7 @@ public class Main extends JavaPlugin
 						if (args.length == 2) {
 							try {
 								Integer.parseInt(args[1]);
-								config.set("countdown-time", args[1]);
+								config.set("countdown-time", Integer.parseInt(args[1]));
 								this.saveConfig();
 								sender.sendMessage(ChatColor.GOLD + "CountdownTime set");
 								return true;
