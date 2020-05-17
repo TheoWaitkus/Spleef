@@ -154,6 +154,7 @@ public class Main extends JavaPlugin
 							else
 							{
 								sender.sendMessage(ChatColor.DARK_RED + "You don't have enough money to join the game!");
+								return true;
 							}
 
 						}
