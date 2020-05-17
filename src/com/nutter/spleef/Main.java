@@ -1,22 +1,14 @@
 package com.nutter.spleef;
-import java.util.ArrayList;
-
 import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
-
 import net.milkbowl.vault.economy.Economy;
-
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.scheduler.BukkitTask;
-
 
 /* TODO
 
@@ -57,7 +49,7 @@ public class Main extends JavaPlugin
 
 			if(args.length == 0)
 			{
-				sender.sendMessage(ChatColor.GOLD + "avaliable commands:");
+				sender.sendMessage(ChatColor.GREEN + "avaliable commands:");
 				sender.sendMessage("create, join");
 				if(sender.hasPermission("spleef.admin")){
 					sender.sendMessage(ChatColor.RED + "admin commands:");
@@ -65,7 +57,7 @@ public class Main extends JavaPlugin
 				}
 				return true;
 			}
-
+			//player wants to create a game.
 			if(args[0].equalsIgnoreCase("Create"))
 			{
 				if (args.length == 1) {
@@ -192,15 +184,17 @@ public class Main extends JavaPlugin
 			if (args[0].equalsIgnoreCase("SetArena")) {
 
 				if (sender.hasPermission("spleef.admin")) {
-					if (game != null) {
-						sender.sendMessage(ChatColor.DARK_RED + "There is already a game in progress/waiting to start!");
-						return true;
-					}
 
 					if (args.length == 1) {
 						sender.sendMessage("Usage: /spleef setarena <world> <start x> <start z> <end x> <end z> <altitude>");
 						return true;
 					}
+
+					if (game != null) {
+						sender.sendMessage(ChatColor.DARK_RED + "There is already a game in progress/waiting to start!");
+						return true;
+					}
+
 					if (args.length == 7) {
 						int[] coords = new int[5];
 						for (int i = 2; i < 7; i++) {
@@ -243,6 +237,12 @@ public class Main extends JavaPlugin
 			//player/console/other sender is attempting to set the minimum price for joining a game.
 			if (args[0].equalsIgnoreCase("SetMinPrice")) {
 				if (sender.hasPermission("spleef.admin")) {
+
+					if (args.length == 1) {
+						sender.sendMessage("Usage: /spleef setminprice <minprice>");
+						return true;
+					}
+
 					if (game != null) {
 						sender.sendMessage(ChatColor.DARK_RED + "There is already a game in progress/waiting to start!");
 						return true;
@@ -270,11 +270,17 @@ public class Main extends JavaPlugin
 			//player/console/other sender is attempting to set the time it takes for the game to start after it is created.
 			if (args[0].equalsIgnoreCase("SetStartTime")) {
 				if (sender.hasPermission("spleef.admin")) {
+
+					if (args.length == 1) {
+						sender.sendMessage("Usage: /spleef setstarttime <starttime>");
+						return true;
+					}
+
 					if (game != null) {
 						sender.sendMessage(ChatColor.DARK_RED + "There is already a game in progress/waiting to start!");
 						return true;
 					}
-					if (args.length == 2) {
+					if (args.length > 1) {
 						try {
 							Integer.parseInt(args[1]);
 							config.set("start-time", Integer.parseInt(args[1]));
@@ -299,12 +305,18 @@ public class Main extends JavaPlugin
 			{
 				if (sender.hasPermission("spleef.admin"))
 				{
+
+					if (args.length == 1) {
+						sender.sendMessage("Usage: /spleef setarena <world> <start x> <start z> <end x> <end z> <altitude>");
+						return true;
+					}
+
 					if (game != null)
 					{
 						sender.sendMessage(ChatColor.DARK_RED + "There is already a game in progress/waiting to start!");
 						return true;
 					}
-					if (args.length == 2)
+					if (args.length > 1)
 					{
 						try
 						{
@@ -327,7 +339,6 @@ public class Main extends JavaPlugin
 					return true;
 				}
 			}
-
 		}
 		return false;
 	}

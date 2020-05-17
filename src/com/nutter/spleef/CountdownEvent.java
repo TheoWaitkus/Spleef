@@ -36,12 +36,12 @@ public class CountdownEvent extends BukkitRunnable {
         {
             if(showEveryone)
             {
-                Bukkit.broadcastMessage(ChatColor.DARK_GREEN + prefix + countdown);
+                Bukkit.broadcastMessage(prefix + ChatColor.DARK_GREEN + countdown);
             }
             else
             {
                 for(Player p: game.joinedList){
-                    p.sendMessage(ChatColor.DARK_GREEN + prefix + countdown);
+                    p.sendMessage(prefix + ChatColor.DARK_GREEN + countdown);
                 }
             }
 
