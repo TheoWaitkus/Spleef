@@ -151,6 +151,10 @@ public class Main extends JavaPlugin
 								Bukkit.broadcastMessage(ChatColor.GOLD + p.getName() + " has joined the spleef game! There are " + ChatColor.DARK_GREEN + (game.joinedList.size() + 1)  + ChatColor.GOLD + " players.");
 								return game.addPlayer(p);
 							}
+							else
+							{
+								sender.sendMessage(ChatColor.DARK_RED + "You don't have enough money to join the game!");
+							}
 
 						}
 					}
