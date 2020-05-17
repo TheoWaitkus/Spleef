@@ -168,7 +168,7 @@ public class SpleefGame
 
 		for(Player p : joinedList)
 		{
-			if((p.getLocation().getBlockX() > endx || p.getLocation().getBlockX() < startx) || (p.getLocation().getBlockZ() > endz || p.getLocation().getBlockZ() < startz) || (p.getLocation().getBlockY() < altitude || p.getLocation().getBlockY() > altitude + 5))
+			if((p.getLocation().getBlockX() > endx || p.getLocation().getBlockX() < startx) || (p.getLocation().getBlockZ() > endz || p.getLocation().getBlockZ() < startz) || (p.getLocation().getBlockY() < (altitude-2) || p.getLocation().getBlockY() > (altitude + 5)))
 			{
 				Bukkit.broadcastMessage(ChatColor.DARK_GREEN + p.getName() + " has been eliminated! Better luck next time!");
 				p.getInventory().clear();
@@ -176,6 +176,8 @@ public class SpleefGame
 				ObjectWriter.restoreCoords(plugin,p);
 				joinedList.remove(p);
 			}
+			p.setHealth(20);
+			p.setFoodLevel(20);
 		}
 
 		if(joinedList.size() <= 1){
