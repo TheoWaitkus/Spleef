@@ -103,6 +103,12 @@ public class Main extends JavaPlugin
 						sender.sendMessage(ChatColor.DARK_RED + "No game was created.");
 						return true;
 					}
+					
+					if(price<config.getInt("min-price"))
+					{
+						sender.sendMessage(ChatColor.DARK_RED + "Price was less than MinPrice!");
+						sender.sendMessage(ChatColor.DARK_RED + "No game was created.");
+					}
 
 
 					game = new SpleefGame(this, sender, price);
@@ -251,7 +257,8 @@ public class Main extends JavaPlugin
 					if (args.length == 2) {
 						try {
 							Integer.parseInt(args[1]);
-							config.set("min-price", args[1]);
+							config.set("min-price", Integer.parseInt(args[1]));
+							this.saveConfig();
 							sender.sendMessage(ChatColor.GOLD + "MinPrice set");
 							return true;
 						} catch (Exception e) {
