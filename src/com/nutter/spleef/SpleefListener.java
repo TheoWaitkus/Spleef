@@ -1,13 +1,17 @@
 package com.nutter.spleef;
 
+import java.io.File;
+
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.ProjectileHitEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 
 public class SpleefListener implements Listener
 {
@@ -57,4 +61,21 @@ public class SpleefListener implements Listener
 		}
 		
 	}
+	
+	@EventHandler
+	public void onPlayerJoin(PlayerJoinEvent event)
+	{
+		Player p = event.getPlayer();
+		File inventory = new File(plugin.getDataFolder()+ File.separator +"PlayerInventoryData"+ File.separator +p.getUniqueId()+".txt");
+		File location = new File(plugin.getDataFolder()+ File.separator +"PlayerCoordData"+ File.separator +p.getUniqueId()+".txt");
+		if(inventory.exists())
+		{
+			ObjectWriter.restoreInventory(plugin,p);
+		}
+		if(location.exists())
+		{
+			ObjectWriter.restoreCoords(plugin,p);
+		}
+	}
+	
 }
