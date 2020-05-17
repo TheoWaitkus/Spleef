@@ -11,7 +11,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.ProjectileHitEvent;
+import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.inventory.ItemStack;
 
 public class SpleefListener implements Listener
 {
@@ -76,5 +78,14 @@ public class SpleefListener implements Listener
 			ObjectWriter.restoreCoords(plugin,p);
 		}
 	}
+	@EventHandler
+	  public void craftItem(PrepareItemCraftEvent e) 
+	  {
+	      if(plugin.game!=null&& plugin.game.joinedList!=null&&plugin.game.joinedList.contains(e.getViewers().get(0)))
+	      {
+	          e.getInventory().setResult(new ItemStack(Material.AIR));
+	      }
+	      
+	  }	
 	
 }
