@@ -329,7 +329,7 @@ public class Main extends JavaPlugin
 							Integer.parseInt(args[1]);
 							config.set("countdown-time", Integer.parseInt(args[1]));
 							this.saveConfig();
-							sender.sendMessage(ChatColor.GREEN + "Countdown time set to" + config.getInt("countdown-time") + " seconds");
+							sender.sendMessage(ChatColor.GREEN + "Countdown time set to " + config.getInt("countdown-time") + " seconds");
 							return true;
 						}
 						catch (Exception e)
