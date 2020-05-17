@@ -47,7 +47,6 @@ public class SpleefListener implements Listener
 	            startz = endz;
 	            endz = swap;
 	        }
-	        plugin.getLogger().info(Integer.toString(startx));
 			if(block.getX()>=(double)startx && block.getX()<=(double)endx)
 			{
 				if(block.getZ()>=(double)startz && block.getZ()<=(double)endz)
