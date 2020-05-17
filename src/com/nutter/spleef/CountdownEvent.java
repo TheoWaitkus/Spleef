@@ -28,7 +28,7 @@ public class CountdownEvent extends BukkitRunnable {
         {
             this.cancel();
             for(Player p: game.joinedList){
-                p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 15, 3);
+                p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_BELL, 10, 1);
             }
         }
         else
@@ -37,7 +37,7 @@ public class CountdownEvent extends BukkitRunnable {
             {
                 Bukkit.broadcastMessage(ChatColor.DARK_GREEN + Integer.toString(countdown));
                 for(Player p: game.joinedList){
-                    p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 15, 1);
+                    p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 10, 1);
                 }
             }
             else
