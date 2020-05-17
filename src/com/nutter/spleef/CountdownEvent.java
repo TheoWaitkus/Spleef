@@ -26,6 +26,7 @@ public class CountdownEvent extends BukkitRunnable {
         {
             Bukkit.broadcastMessage(ChatColor.DARK_GREEN + Integer.toString(countdown) + "!");
         }
+        countdown--;
     }
 
 }
