@@ -17,6 +17,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.scheduler.BukkitTask;
 
 /* TODO
+
 -Write an onPlayerJoin listener that checks if players have a file written with their inventory and gives it to them, before deleting it.
 
 -replace the surrounding area around the arena with barrier blocks when the game starts.
