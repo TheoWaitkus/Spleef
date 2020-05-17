@@ -178,7 +178,7 @@ public class SpleefGame
 				p.getInventory().clear();
 				ObjectWriter.restoreInventory(plugin,p);
 				ObjectWriter.restoreCoords(plugin,p);
-				joinedList.remove(p);
+				joinedList.remove(i);
 				i--;
 			}
 		}
