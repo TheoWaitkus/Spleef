@@ -35,7 +35,7 @@ public class SpleefGame
 		pot = 0.0;
 		isInProgress = false;
 		startTask = new GameStartEvent(this.plugin).runTaskLater(this.plugin, 20 * plugin.getConfig().getInt("start-time"));
-		new CountdownEvent(this.plugin, this, plugin.getConfig().getInt("start-time")).runTaskTimer(plugin,0, 20);
+		new CountdownEvent(this.plugin, this, plugin.getConfig().getInt("start-time"),false).runTaskTimer(plugin,0, 20);
 
 
 		FileConfiguration config = plugin.getConfig();
@@ -128,7 +128,7 @@ public class SpleefGame
 			p.teleport(new Location(world, startx + (double)(endx-startx)/2.0, y  + 2, startz + (double)(endz-startz)/2.0));
 		}
 		startTask = new GameStartEvent(this.plugin).runTaskLater(this.plugin, 20 * plugin.getConfig().getInt("countdown-time"));
-		new CountdownEvent(this.plugin, this, plugin.getConfig().getInt("countdown-time")).runTaskTimer(plugin,0, 20);
+		new CountdownEvent(this.plugin, this, plugin.getConfig().getInt("countdown-time"),true).runTaskTimer(plugin,0, 20);
 	}
 
 	public void onCountdownEnd()
