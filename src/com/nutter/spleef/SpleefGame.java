@@ -35,7 +35,7 @@ public class SpleefGame
 		pot = 0.0;
 		isInProgress = false;
 		startTask = new GameStartEvent(this.plugin).runTaskLater(this.plugin, 20 * plugin.getConfig().getInt("start-time"));
-		new CountdownEvent(this.plugin, this, plugin.getConfig().getInt("start-time"),false).runTaskTimer(plugin,0, 20);
+		new CountdownEvent(this.plugin, this, plugin.getConfig().getInt("start-time"),false, ChatColor.GOLD + "Teleporting joined players in: ").runTaskTimer(plugin,0, 20);
 
 
 		FileConfiguration config = plugin.getConfig();
@@ -44,7 +44,6 @@ public class SpleefGame
 		endx = config.getInt("arena-end.x");
 		startz = config.getInt("arena-start.z");
 		endz = config.getInt("arena-end.z");
-
 		altitude = config.getInt("altitude");
 
 		if(endx < startx)
@@ -128,7 +127,7 @@ public class SpleefGame
 			p.teleport(new Location(world, startx + (double)(endx-startx)/2.0, y  + 2, startz + (double)(endz-startz)/2.0));
 		}
 		startTask = new GameStartEvent(this.plugin).runTaskLater(this.plugin, 20 * plugin.getConfig().getInt("countdown-time"));
-		new CountdownEvent(this.plugin, this, plugin.getConfig().getInt("countdown-time"),true).runTaskTimer(plugin,0, 20);
+		new CountdownEvent(this.plugin, this, plugin.getConfig().getInt("countdown-time"),true, ChatColor.GOLD + "Game starts in: ").runTaskTimer(plugin,0, 20);
 	}
 
 	public void onCountdownEnd()

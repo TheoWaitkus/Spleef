@@ -20,8 +20,6 @@ import org.bukkit.scheduler.BukkitTask;
 
 -Write an onPlayerJoin listener that checks if players have a file written with their inventory and gives it to them, before deleting it.
 
--replace the surrounding area around the arena with barrier blocks when the game starts.
-
  */
 
 public class Main extends JavaPlugin
@@ -48,25 +46,29 @@ public class Main extends JavaPlugin
 
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
 	{
-		if(label.equalsIgnoreCase("save"))
-		{
-			Player p = (Player) sender;
-			ObjectWriter.writeInventory(this,p);
-			p.getInventory().clear();
-		}
-		
-		if(label.equalsIgnoreCase("regen"))
-		{
-			Player p = (Player) sender;
-			ObjectWriter.restoreInventory(this,p);
-		}
-		
 		if(label.equalsIgnoreCase("Spleef"))
 		{
 			FileConfiguration config = this.getConfig();
 
-			if(args.length >= 2 && args[0].equalsIgnoreCase("Create")) 
+			if(args.length == 0)
 			{
+				sender.sendMessage(ChatColor.GOLD + "avaliable commands:");
+				sender.sendMessage("create, join");
+				if(sender.hasPermission("spleef.admin")){
+					sender.sendMessage(ChatColor.RED + "admin commands:");
+					sender.sendMessage("setarena, setminprice, setstarttime, setcountdowntime");
+				}
+				return true;
+			}
+
+			if(args[0].equalsIgnoreCase("Create"))
+			{
+				if (args.length == 1) {
+					sender.sendMessage("Usage: /spleef create <priceToJoin>");
+					sender.sendMessage("this automatically charges you and joins you to the game you created");
+					return true;
+				}
+
 				if (config.isSet("world") && config.isSet("arena-start.x") && config.isSet("arena-start.z") && config.isSet("arena-end.x") && config.isSet("arena-end.z") && config.isSet("altitude"))
 				{
 					//player/console/other sender wants to create a game.
@@ -107,7 +109,8 @@ public class Main extends JavaPlugin
 
 
 					game = new SpleefGame(this, sender, price);
-					Bukkit.broadcastMessage(ChatColor.GOLD + sender.getName() + " has created a spleef game! type /spleef join to join for $"+price);
+					Bukkit.broadcastMessage(ChatColor.GOLD + sender.getName() + " has created a spleef game! type /spleef join to join for $" + price);
+
 					if(sender instanceof Player)
 					{
 						this.onCommand(sender,command,label,new String[]{"Join"});
@@ -115,213 +118,211 @@ public class Main extends JavaPlugin
 					return true;
 
 				}
-				else if(args[0].equalsIgnoreCase("Create") && args.length>=2)
+				else
 				{
 					sender.sendMessage("Arena area has not been defined yet, ask an admin to set it up.");
 					return true;
 				}
-				else if(args[0].equalsIgnoreCase("Create"))
-				{
-					sender.sendMessage("Invalid args");
-					return true;
-				}
 			}
 
-				//player wants to join the game.
-				if (args[0].equalsIgnoreCase("Join")) 
-				{
-
-					if (game == null) {
-						sender.sendMessage(ChatColor.DARK_RED + "There is currently no game, start one with \"/spleef create <Price>\".");
-						return true;
-					}
-					if (game.isInProgress) {
-						sender.sendMessage(ChatColor.DARK_RED + "Game is currently in progress, please wait until after it is complete.");
-						return true;
-					}
-					if (sender instanceof Player) {
-						Player p = (Player) sender;
-
-						if (game.joinedList.contains(p)) {
-							p.sendMessage(ChatColor.DARK_RED + "You are already in the game.");
-							return true;
-						} else {
-							if (economy.has(p, game.price)) {
-								economy.withdrawPlayer(p, game.price);
-								Bukkit.broadcastMessage(ChatColor.GOLD + p.getName() + " has joined the spleef game! There are " + ChatColor.DARK_GREEN + (game.joinedList.size() + 1)  + ChatColor.GOLD + " players.");
-								return game.addPlayer(p);
-							}
-							else
-							{
-								sender.sendMessage(ChatColor.DARK_RED + "You don't have enough money to join the game!");
-								return true;
-							}
-
-						}
-					}
-					sender.sendMessage(ChatColor.DARK_RED + "You are not a player, ya dingus! You can't join a game!");
+			//player wants to join the game.
+			if (args[0].equalsIgnoreCase("Join"))
+			{
+				if (game == null) {
+					sender.sendMessage(ChatColor.DARK_RED + "There is currently no game, start one with \"/spleef create <Price>\".");
 					return true;
 				}
-
-				//player wants to leave the queue for the game
-				if (args[0].equalsIgnoreCase("Leave")) {
-					if (game == null) {
-						sender.sendMessage(ChatColor.DARK_RED + "There is currently no game.");
-						return true;
-					}
-					if (game.isInProgress) {
-						sender.sendMessage(ChatColor.DARK_RED + "Game is currently in progress, please wait until after it is complete.");
-						return true;
-					}
-					if (sender instanceof Player) {
-
-						Player p = (Player) sender;
-						if (game.joinedList.contains(p)) {
-							p.sendMessage(ChatColor.DARK_GREEN + "You have left the game.");
-							return game.removePlayer(p);
-						} else {
-
-						}
-					}
-					return false;
+				if (game.isInProgress) {
+					sender.sendMessage(ChatColor.DARK_RED + "Game is currently in progress, please wait until after it is complete.");
+					return true;
 				}
+				if (sender instanceof Player) {
+					Player p = (Player) sender;
 
-				//player/console/other sender is attempting to setup an area to be the spleef arena.
-				if (args[0].equalsIgnoreCase("SetArena")) {
-
-					if (sender.hasPermission("spleef.admin")) {
-						if (game != null) {
-							sender.sendMessage(ChatColor.DARK_RED + "There is already a game in progress/waiting to start!");
-							return true;
-						}
-
-						if (args.length == 1) {
-							sender.sendMessage("Usage: /spleef setarena <world> <start x> <start z> <end x> <end z> <altitude>");
-							return true;
-						}
-						if (args.length == 7) {
-							int[] coords = new int[5];
-							for (int i = 2; i < 7; i++) {
-								try {
-									coords[i - 2] = Integer.parseInt(args[i]);
-								} catch (NumberFormatException e) {
-									sender.sendMessage(ChatColor.DARK_RED + "Invalid args.");
-									return onCommand(sender, command, label, new String[]{"setarena"});
-
-								}
-
-							}
-							if (Bukkit.getServer().getWorld(args[1]) == null) {
-								sender.sendMessage(ChatColor.DARK_RED + "That world does not exist!");
-								if(sender instanceof Player){
-									Player p = (Player) sender;
-									sender.sendMessage( "You are currently in \"" + p.getWorld().getName() + "\".");
-								}
-								return true;
-							}
-							config.set("world", args[1]);
-							config.set("arena-start.x", coords[0]);
-							config.set("arena-start.z", coords[1]);
-							config.set("arena-end.x", coords[2]);
-							config.set("arena-end.z", coords[3]);
-							config.set("altitude", coords[4]);
-							this.saveConfig();
-							sender.sendMessage(ChatColor.GOLD + Integer.toString(Math.abs(coords[0] - coords[2])) + "*" + Integer.toString(Math.abs(coords[1] - coords[3])) + " Arena defined.");
-
-							return true;
-
-						}
-						sender.sendMessage(ChatColor.DARK_RED + "Invalid args.");
-						return onCommand(sender, command, label, new String[]{"setarena"});
-					}
-
-
-				}
-
-				//player/console/other sender is attempting to set the minimum price for joining a game.
-				if (args[0].equalsIgnoreCase("SetMinPrice")) {
-					if (sender.hasPermission("spleef.admin")) {
-						if (game != null) {
-							sender.sendMessage(ChatColor.DARK_RED + "There is already a game in progress/waiting to start!");
-							return true;
-						}
-
-						if (args.length == 2) {
-							try {
-								Integer.parseInt(args[1]);
-								config.set("min-price", args[1]);
-								sender.sendMessage(ChatColor.GOLD + "MinPrice set");
-								return true;
-							} catch (Exception e) {
-								sender.sendMessage(ChatColor.DARK_RED + "Invalid args.");
-								return true;
-							}
-						}
+					if (game.joinedList.contains(p)) {
+						p.sendMessage(ChatColor.DARK_RED + "You are already in the game.");
+						return true;
 					} else {
-						sender.sendMessage(ChatColor.DARK_RED + "You don't have permission to do this!");
-						return true;
-					}
-				}
-
-				//player/console/other sender is attempting to set the time it takes for the game to start after it is created.
-				if (args[0].equalsIgnoreCase("SetStartTime")) {
-					if (sender.hasPermission("spleef.admin")) {
-						if (game != null) {
-							sender.sendMessage(ChatColor.DARK_RED + "There is already a game in progress/waiting to start!");
+						if (economy.has(p, game.price)) {
+							economy.withdrawPlayer(p, game.price);
+							Bukkit.broadcastMessage(ChatColor.GOLD + p.getName() + " has joined the spleef game! There are " + ChatColor.DARK_GREEN + (game.joinedList.size() + 1)  + ChatColor.GOLD + " players.");
+							return game.addPlayer(p);
+						}
+						else
+						{
+							sender.sendMessage(ChatColor.DARK_RED + "You don't have enough money to join the game!");
 							return true;
 						}
-						if (args.length == 2) {
-							try {
-								Integer.parseInt(args[1]);
-								config.set("start-time", Integer.parseInt(args[1]));
-								this.saveConfig();
-								sender.sendMessage(ChatColor.GOLD + "StartTime set");
-								return true;
-							} catch (Exception e) {
-								sender.sendMessage(ChatColor.DARK_RED + "Invalid args.");
-								return true;
-							}
-						}
-					} else {
-						sender.sendMessage(ChatColor.DARK_RED + "You don't have permission to do this!");
-						return true;
-					}
-				}
 
-				//player/console/other sender is attempting to set the time it takes for the snow blocks to be able to be broken after players get teleported.
-				if (args[0].equalsIgnoreCase("SetCountdownTime")) {
-					if (sender.hasPermission("spleef.admin")) {
-						if (game != null) {
-							sender.sendMessage(ChatColor.DARK_RED + "There is already a game in progress/waiting to start!");
-							return true;
-						}
-						if (args.length == 2) {
-							try {
-								Integer.parseInt(args[1]);
-								config.set("countdown-time", Integer.parseInt(args[1]));
-								this.saveConfig();
-								sender.sendMessage(ChatColor.GOLD + "CountdownTime set");
-								return true;
-							} catch (Exception e) {
-								sender.sendMessage(ChatColor.DARK_RED + "Invalid args.");
-								return true;
-							}
-						}
-					} else {
-						sender.sendMessage(ChatColor.DARK_RED + "You don't have permission to do this!");
-						return true;
 					}
 				}
-			else
-			{
-				sender.sendMessage("avaliable commands:");
-				sender.sendMessage("create, join");
-				if(sender.hasPermission("spleef.admin")){
-					sender.sendMessage("admin commands:");
-					sender.sendMessage("setarena, setminprice, setstarttime, setcountdowntime");
-				}
+				sender.sendMessage(ChatColor.DARK_RED + "You are not a player, ya dingus! You can't join a game!");
 				return true;
 			}
+
+			//player wants to leave the queue for the game
+			if (args[0].equalsIgnoreCase("Leave")) {
+				if (game == null) {
+					sender.sendMessage(ChatColor.DARK_RED + "There is currently no game.");
+					return true;
+				}
+				if (game.isInProgress) {
+					sender.sendMessage(ChatColor.DARK_RED + "Game is currently in progress, please wait until after it is complete.");
+					return true;
+				}
+				if (sender instanceof Player) {
+
+					Player p = (Player) sender;
+					if (game.joinedList.contains(p)) {
+						p.sendMessage(ChatColor.DARK_GREEN + "You have left the game.");
+						return game.removePlayer(p);
+					} else {
+
+					}
+				}
+				return false;
+			}
+
+			//player/console/other sender is attempting to setup an area to be the spleef arena.
+			if (args[0].equalsIgnoreCase("SetArena")) {
+
+				if (sender.hasPermission("spleef.admin")) {
+					if (game != null) {
+						sender.sendMessage(ChatColor.DARK_RED + "There is already a game in progress/waiting to start!");
+						return true;
+					}
+
+					if (args.length == 1) {
+						sender.sendMessage("Usage: /spleef setarena <world> <start x> <start z> <end x> <end z> <altitude>");
+						return true;
+					}
+					if (args.length == 7) {
+						int[] coords = new int[5];
+						for (int i = 2; i < 7; i++) {
+							try {
+								coords[i - 2] = Integer.parseInt(args[i]);
+							} catch (NumberFormatException e) {
+								sender.sendMessage(ChatColor.DARK_RED + "Invalid args.");
+								return onCommand(sender, command, label, new String[]{"setarena"});
+
+							}
+
+						}
+						if (Bukkit.getServer().getWorld(args[1]) == null) {
+							sender.sendMessage(ChatColor.DARK_RED + "That world does not exist!");
+							if(sender instanceof Player){
+								Player p = (Player) sender;
+								sender.sendMessage( "You are currently in \"" + p.getWorld().getName() + "\".");
+							}
+							return true;
+						}
+						config.set("world", args[1]);
+						config.set("arena-start.x", coords[0]);
+						config.set("arena-start.z", coords[1]);
+						config.set("arena-end.x", coords[2]);
+						config.set("arena-end.z", coords[3]);
+						config.set("altitude", coords[4]);
+						this.saveConfig();
+						sender.sendMessage(ChatColor.GOLD + Integer.toString(Math.abs(coords[0] - coords[2])) + "*" + Integer.toString(Math.abs(coords[1] - coords[3])) + " Arena defined.");
+
+						return true;
+
+					}
+					sender.sendMessage(ChatColor.DARK_RED + "Invalid args.");
+					return onCommand(sender, command, label, new String[]{"setarena"});
+				}
+
+
+			}
+
+			//player/console/other sender is attempting to set the minimum price for joining a game.
+			if (args[0].equalsIgnoreCase("SetMinPrice")) {
+				if (sender.hasPermission("spleef.admin")) {
+					if (game != null) {
+						sender.sendMessage(ChatColor.DARK_RED + "There is already a game in progress/waiting to start!");
+						return true;
+					}
+
+					if (args.length == 2) {
+						try {
+							Integer.parseInt(args[1]);
+							config.set("min-price", args[1]);
+							sender.sendMessage(ChatColor.GOLD + "MinPrice set");
+							return true;
+						} catch (Exception e) {
+							sender.sendMessage(ChatColor.DARK_RED + "Invalid args.");
+							return true;
+						}
+					}
+				}
+				else
+				{
+					sender.sendMessage(ChatColor.DARK_RED + "You don't have permission to do this!");
+					return true;
+				}
+			}
+
+			//player/console/other sender is attempting to set the time it takes for the game to start after it is created.
+			if (args[0].equalsIgnoreCase("SetStartTime")) {
+				if (sender.hasPermission("spleef.admin")) {
+					if (game != null) {
+						sender.sendMessage(ChatColor.DARK_RED + "There is already a game in progress/waiting to start!");
+						return true;
+					}
+					if (args.length == 2) {
+						try {
+							Integer.parseInt(args[1]);
+							config.set("start-time", Integer.parseInt(args[1]));
+							this.saveConfig();
+							sender.sendMessage(ChatColor.GOLD + "StartTime set");
+							return true;
+						} catch (Exception e) {
+							sender.sendMessage(ChatColor.DARK_RED + "Invalid args.");
+							return true;
+						}
+					}
+				}
+				else
+				{
+					sender.sendMessage(ChatColor.DARK_RED + "You don't have permission to do this!");
+					return true;
+				}
+			}
+
+			//player/console/other sender is attempting to set the time it takes for the snow blocks to be able to be broken after players get teleported.
+			if (args[0].equalsIgnoreCase("SetCountdownTime"))
+			{
+				if (sender.hasPermission("spleef.admin"))
+				{
+					if (game != null)
+					{
+						sender.sendMessage(ChatColor.DARK_RED + "There is already a game in progress/waiting to start!");
+						return true;
+					}
+					if (args.length == 2)
+					{
+						try
+						{
+							Integer.parseInt(args[1]);
+							config.set("countdown-time", Integer.parseInt(args[1]));
+							this.saveConfig();
+							sender.sendMessage(ChatColor.GOLD + "CountdownTime set");
+							return true;
+						}
+						catch (Exception e)
+						{
+							sender.sendMessage(ChatColor.DARK_RED + "Invalid args.");
+							return true;
+						}
+					}
+				}
+				else
+				{
+					sender.sendMessage(ChatColor.DARK_RED + "You don't have permission to do this!");
+					return true;
+				}
+			}
+
 		}
 		return false;
 	}

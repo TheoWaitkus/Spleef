@@ -13,13 +13,14 @@ public class CountdownEvent extends BukkitRunnable {
     private SpleefGame game;
     private int countdown;
     private boolean showEveryone;
+    private String prefix;
 
-    public CountdownEvent(Main main, SpleefGame caller, int toCountdown, boolean showEveryone){
+    public CountdownEvent(Main main, SpleefGame caller, int toCountdown, boolean showEveryone, String prefix){
         plugin = main;
         game = caller;
         countdown = toCountdown;
         this.showEveryone = showEveryone;
-
+        this.prefix = prefix;
     }
     @Override
     public void run()
@@ -35,16 +36,18 @@ public class CountdownEvent extends BukkitRunnable {
         {
             if(showEveryone)
             {
-                Bukkit.broadcastMessage(ChatColor.DARK_GREEN + Integer.toString(countdown));
-                for(Player p: game.joinedList){
-                    p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 10, 1);
-                }
+                Bukkit.broadcastMessage(ChatColor.DARK_GREEN + prefix + countdown);
             }
             else
             {
                 for(Player p: game.joinedList){
-                    p.sendMessage(ChatColor.DARK_GREEN + Integer.toString(countdown));
+                    p.sendMessage(ChatColor.DARK_GREEN + prefix + countdown);
                 }
+            }
+
+
+            for(Player p: game.joinedList){
+                p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 10, 1);
             }
         }
         countdown--;
