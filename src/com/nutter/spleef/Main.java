@@ -253,7 +253,7 @@ public class Main extends JavaPlugin
 						return true;
 					}
 
-					if (args.length == 2) {
+					if (args.length >= 2) {
 						try {
 							Integer.parseInt(args[1]);
 							config.set("min-price", Integer.parseInt(args[1]));
