@@ -22,9 +22,9 @@ public class ObjectWriter
 	{
         try 
         { 
-        	File yourFile = new File(plugin.getDataFolder()+"\\PlayerInventoryData\\"+p.getUniqueId()+".txt");
+        	File yourFile = new File(plugin.getDataFolder()+ File.separator +"PlayerInventoryData"+ File.separator +p.getUniqueId()+".txt");
         	yourFile.createNewFile();
-            FileOutputStream fileOut = new FileOutputStream(plugin.getDataFolder()+"\\PlayerInventoryData\\"+p.getUniqueId()+".txt");
+            FileOutputStream fileOut = new FileOutputStream(plugin.getDataFolder()+ File.separator +"PlayerInventoryData"+ File.separator +p.getUniqueId()+".txt");
             BukkitObjectOutputStream objectOut = new BukkitObjectOutputStream(new ObjectOutputStream(fileOut));
             objectOut.writeObject(new SerializableInventory(p.getInventory()));
             objectOut.close();
@@ -40,7 +40,7 @@ public class ObjectWriter
         try 
         { 
 
-            FileInputStream fileIn = new FileInputStream(plugin.getDataFolder()+"\\PlayerInventoryData\\"+p.getUniqueId()+".txt");
+            FileInputStream fileIn = new FileInputStream(plugin.getDataFolder() + File.separator + "PlayerInventoryData" + File.separator + p.getUniqueId()+".txt");
             BukkitObjectInputStream objectIn = new BukkitObjectInputStream(new ObjectInputStream(fileIn));
             Object obj = objectIn.readObject();
             objectIn.close();
@@ -80,9 +80,9 @@ public class ObjectWriter
 	{
         try 
         { 
-        	File yourFile = new File(plugin.getDataFolder()+"\\PlayerCoordData\\"+p.getUniqueId()+".txt");
+        	File yourFile = new File(plugin.getDataFolder() + File.separator + "PlayerCoordData" + File.separator +p.getUniqueId()+".txt");
         	yourFile.createNewFile();
-            FileOutputStream fileOut = new FileOutputStream(plugin.getDataFolder()+"\\PlayerCoordData\\"+p.getUniqueId()+".txt");
+            FileOutputStream fileOut = new FileOutputStream(plugin.getDataFolder()+ File.separator +"PlayerCoordData"+ File.separator +p.getUniqueId()+".txt");
             ObjectOutputStream objectOut = new ObjectOutputStream(new ObjectOutputStream(fileOut));
             objectOut.writeObject(p.getLocation().serialize());
             objectOut.close();
@@ -97,7 +97,7 @@ public class ObjectWriter
 	{
         try 
         { 
-            FileInputStream fileIn = new FileInputStream(plugin.getDataFolder()+"\\PlayerCoordData\\"+p.getUniqueId()+".txt");
+            FileInputStream fileIn = new FileInputStream(plugin.getDataFolder() + File.separator + "PlayerCoordData" + File.separator + p.getUniqueId()+".txt");
             ObjectInputStream objectIn = new ObjectInputStream(new ObjectInputStream(fileIn));
             Object obj = objectIn.readObject();
             objectIn.close();
