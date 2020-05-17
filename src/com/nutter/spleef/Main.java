@@ -106,8 +106,9 @@ public class Main extends JavaPlugin
 					
 					if(price<config.getInt("min-price"))
 					{
-						sender.sendMessage(ChatColor.DARK_RED + "Price was less than MinPrice!");
+						sender.sendMessage(ChatColor.DARK_RED + "Price was less than minimum price!");
 						sender.sendMessage(ChatColor.DARK_RED + "No game was created.");
+						return true;
 					}
 
 
