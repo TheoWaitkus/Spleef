@@ -258,7 +258,7 @@ public class Main extends JavaPlugin
 							Integer.parseInt(args[1]);
 							config.set("min-price", Integer.parseInt(args[1]));
 							this.saveConfig();
-							sender.sendMessage(ChatColor.GREEN + "Minimum price set");
+							sender.sendMessage(ChatColor.GREEN + "Minimum price set to " + config.getInt("min-price"));
 							return true;
 						} catch (Exception e) {
 							sender.sendMessage(ChatColor.DARK_RED + "Invalid args.");
@@ -291,7 +291,7 @@ public class Main extends JavaPlugin
 							Integer.parseInt(args[1]);
 							config.set("start-time", Integer.parseInt(args[1]));
 							this.saveConfig();
-							sender.sendMessage(ChatColor.GREEN + "Starting time set");
+							sender.sendMessage(ChatColor.GREEN + "Starting time set to " + config.getInt("start-time") + " seconds");
 							return true;
 						} catch (Exception e) {
 							sender.sendMessage(ChatColor.DARK_RED + "Invalid args.");
@@ -329,7 +329,7 @@ public class Main extends JavaPlugin
 							Integer.parseInt(args[1]);
 							config.set("countdown-time", Integer.parseInt(args[1]));
 							this.saveConfig();
-							sender.sendMessage(ChatColor.GREEN + "Countdown time set");
+							sender.sendMessage(ChatColor.GREEN + "Countdown time set to" + config.getInt("countdown-time") + " seconds");
 							return true;
 						}
 						catch (Exception e)
