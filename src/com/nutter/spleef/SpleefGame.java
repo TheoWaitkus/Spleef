@@ -147,7 +147,8 @@ public class SpleefGame
 
 		Bukkit.broadcastMessage(ChatColor.DARK_GREEN + "The game is over!");
 
-		for(Player p: joinedList){
+		for(Player p: joinedList)
+		{
 			p.getInventory().clear();
 			ObjectWriter.restoreCoords(plugin,p);
 			ObjectWriter.restoreInventory(plugin,p);
