@@ -35,6 +35,7 @@ public class SpleefGame
 		pot = 0.0;
 		isInProgress = false;
 		startTask = new GameStartEvent(this.plugin).runTaskLater(this.plugin, 20 * plugin.getConfig().getInt("start-time"));
+		new PriceAlertEvent(this).runTaskLater(plugin,20);
 		new CountdownEvent(this.plugin, this, plugin.getConfig().getInt("start-time"),false, ChatColor.GREEN + "Teleporting joined players in: ").runTaskTimer(plugin,0, 20);
 
 

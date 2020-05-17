@@ -176,7 +176,9 @@ public class Main extends JavaPlugin
 
 					Player p = (Player) sender;
 					if (game.joinedList.contains(p)) {
-						p.sendMessage(ChatColor.DARK_GREEN + "You have left the game.");
+						economy.depositPlayer(p,game.price);
+						game.pot -= game.price;
+						p.sendMessage(ChatColor.DARK_GREEN + "You have left the game and been refunded.");
 						return game.removePlayer(p);
 					} else {
 
