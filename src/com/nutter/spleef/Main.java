@@ -274,7 +274,7 @@ public class Main extends JavaPlugin
 						if (args.length == 2) {
 							try {
 								Integer.parseInt(args[1]);
-								config.set("start-time", args[1]);
+								config.set("start-time", Integer.parseInt(args[1]));
 								this.saveConfig();
 								sender.sendMessage(ChatColor.GOLD + "StartTime set");
 								return true;
@@ -299,7 +299,7 @@ public class Main extends JavaPlugin
 						if (args.length == 2) {
 							try {
 								Integer.parseInt(args[1]);
-								config.set("countdown-time", args[1]);
+								config.set("countdown-time", Integer.parseInt(args[1]));
 								this.saveConfig();
 								sender.sendMessage(ChatColor.GOLD + "CountdownTime set");
 								return true;
