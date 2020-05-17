@@ -6,6 +6,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -15,6 +16,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.scheduler.BukkitTask;
+
 
 /* TODO
 
@@ -32,6 +34,9 @@ public class Main extends JavaPlugin
 	public void onEnable()
 	{
 		this.saveDefaultConfig();
+		PluginManager pm = getServer().getPluginManager();
+		SpleefListener listener = new SpleefListener(this);
+		pm.registerEvents(listener, this);
 		setupEconomy();
 		getLogger().info("Spleef Enabled");
 		setupEconomy();
