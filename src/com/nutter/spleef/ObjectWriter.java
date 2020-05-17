@@ -67,6 +67,8 @@ public class ObjectWriter
 
             }
             p.getInventory().setArmorContents(toArmor);
+            File yourFile = new File(plugin.getDataFolder()+ File.separator +"PlayerInventoryData"+ File.separator +p.getUniqueId()+".txt");
+            yourFile.delete();
 
 
         } 
@@ -104,6 +106,8 @@ public class ObjectWriter
             
             Location location = Location.deserialize(((Map<String,Object>) obj));
 			p.teleport(location);
+			File yourFile = new File(plugin.getDataFolder() + File.separator + "PlayerCoordData" + File.separator +p.getUniqueId()+".txt");
+			yourFile.delete();
 			
         } 
         catch (Exception ex) 

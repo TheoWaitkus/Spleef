@@ -12,7 +12,8 @@ public class DuringGameLoopEvent extends BukkitRunnable {
         game = caller;
     }
     @Override
-    public void run() {
+    public void run() 
+    {
         game.perTickDuringGame();
     }
 }

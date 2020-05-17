@@ -109,6 +109,10 @@ public class Main extends JavaPlugin
 					game = new SpleefGame(this, sender, price);
 					sender.sendMessage(ChatColor.DARK_GREEN + "Successfully created a game, do \"/spleef join\" to join it.");
 					Bukkit.broadcastMessage(ChatColor.GOLD + sender.getName() + " has created a spleef game! type /spleef join to ready up!");
+					if(sender instanceof Player)
+					{
+						this.onCommand(sender,command,label,new String[]{"Join"});
+					}
 					return true;
 
 				}
@@ -147,6 +151,11 @@ public class Main extends JavaPlugin
 								economy.withdrawPlayer(p, game.price);
 								Bukkit.broadcastMessage(ChatColor.GOLD + p.getName() + " has joined the spleef game! There are " + ChatColor.DARK_GREEN + (game.joinedList.size() + 1)  + ChatColor.GOLD + " players.");
 								return game.addPlayer(p);
+							}
+							else
+							{
+								sender.sendMessage(ChatColor.DARK_RED + "You don't have enough money to join the game!");
+								return true;
 							}
 
 						}
@@ -266,6 +275,7 @@ public class Main extends JavaPlugin
 							try {
 								Integer.parseInt(args[1]);
 								config.set("start-time", args[1]);
+								this.saveConfig();
 								sender.sendMessage(ChatColor.GOLD + "StartTime set");
 								return true;
 							} catch (Exception e) {
@@ -290,6 +300,7 @@ public class Main extends JavaPlugin
 							try {
 								Integer.parseInt(args[1]);
 								config.set("countdown-time", args[1]);
+								this.saveConfig();
 								sender.sendMessage(ChatColor.GOLD + "CountdownTime set");
 								return true;
 							} catch (Exception e) {
