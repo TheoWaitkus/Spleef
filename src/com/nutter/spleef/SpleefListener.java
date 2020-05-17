@@ -70,6 +70,7 @@ public class SpleefListener implements Listener
 		File location = new File(plugin.getDataFolder()+ File.separator +"PlayerCoordData"+ File.separator +p.getUniqueId()+".txt");
 		if(inventory.exists())
 		{
+			p.getInventory().clear();
 			ObjectWriter.restoreInventory(plugin,p);
 		}
 		if(location.exists())
