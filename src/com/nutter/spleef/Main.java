@@ -10,7 +10,29 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
-/* TODO
+/*
+    FIXME
+
+	-make it so that when you die after the game starts, you don't lose your entire inventory!
+
+	-make it so that it automatically creates folders and files where it needs them.
+
+	TODO
+
+	-make players spawn randomly instead of in one central location.
+
+	-make the items in the arena disappear at the end.
+
+	-add multiple layers (give # of layers when doing /create, so like... /create <price> <#layers>) up to a max of 3
+
+	-add power-ups that spawn randomly around the arena, that you use by either right clicking or just picking up.
+
+		power-up ideas:
+
+			-item that makes all snow under you obsidian for a few seconds.
+
+
+
 
  */
 
@@ -48,7 +70,7 @@ public class Main extends JavaPlugin
 			if(args.length == 0)
 			{
 				sender.sendMessage(ChatColor.GREEN + "avaliable commands:");
-				sender.sendMessage("create, join");
+				sender.sendMessage("create, join, leave");
 				if(sender.hasPermission("spleef.admin")){
 					sender.sendMessage(ChatColor.RED + "admin commands:");
 					sender.sendMessage("setarena, setminprice, setstarttime, setcountdowntime");
@@ -181,7 +203,8 @@ public class Main extends JavaPlugin
 						p.sendMessage(ChatColor.DARK_GREEN + "You have left the game and been refunded.");
 						return game.removePlayer(p);
 					} else {
-
+						sender.sendMessage(ChatColor.DARK_RED + "You are not currently in the game!");
+						return true;
 					}
 				}
 				return false;
