@@ -110,6 +110,7 @@ public class SpleefGame
 		{
 
 			//writes each player's inventory to a file.
+			p.closeInventory();
 			ObjectWriter.writeInventory(plugin, p);
 			ObjectWriter.writeCoords(plugin,p);
 
