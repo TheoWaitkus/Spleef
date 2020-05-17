@@ -125,8 +125,8 @@ public class SpleefGame
 			//teleports each player to the center of the arena, 2 blocks off the ground (hopefully enough to prevent clips or anything)
 			p.teleport(new Location(world, startx + (double)(endx-startx)/2.0, y  + 2, startz + (double)(endz-startz)/2.0));
 		}
-
 		startTask = new GameStartEvent(this.plugin).runTaskLater(this.plugin, 20 * plugin.getConfig().getInt("countdown-time"));
+		
 	}
 
 	public void onCountdownEnd()
