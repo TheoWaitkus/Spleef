@@ -68,6 +68,7 @@ public class ObjectWriter
             }
             p.getInventory().setArmorContents(toArmor);
             File yourFile = new File(plugin.getDataFolder()+ File.separator +"PlayerInventoryData"+ File.separator +p.getUniqueId()+".txt");
+            if(p.getInventory().getArmorContents().equals(toArmor) && p.getInventory().getContents().equals(to))
             yourFile.delete();
 
 
